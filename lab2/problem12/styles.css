@@ -1,0 +1,39 @@
+.box {
+  position: relative;
+}
+
+.hortizontal-line-top {
+  width: 99px;
+  height: 1px;
+  position: absolute;
+  background: black;
+  top: 20px;
+  left: 21px;
+}
+
+.hortizontal-line-bottom {
+  width: 99px;
+  height: 1px;
+  position: absolute;
+  background: black;
+  top: 120px;
+  left: 21px;
+}
+
+.vertical-line-left {
+  width: 1px;
+  height: 99px;
+  position: absolute;
+  background: black;
+  top: 21px;
+  left: 20px;
+}
+
+.vertical-line-right {
+  width: 1px;
+  height: 99px;
+  position: absolute;
+  background: black;
+  top: 21px;
+  left: 120px;
+}
