@@ -1,0 +1,207 @@
+@font-face {
+  font-family: proxima-nova;
+  src: url("media/Proxima Nova Bold.otf");
+}
+
+@font-face {
+  font-family: proxima-light;
+  src: url("media/Proxima Nova Alt Light.otf");
+}
+
+@font-face {
+  font-family: proxima-thin;
+  src: url("media/Proxima Nova Alt Thin.otf");
+}
+
+section {
+  float: left;
+  margin: 0 1.5%;
+  width: 100%;
+  margin-left: 120px;
+}
+
+aside {
+  float: right;
+  margin: 0 1.5%;
+  width: 30%;
+  padding-left: 3px;
+  padding-right: 80px;
+}
+aside * {
+  font-family: proxima-nova;
+}
+#title-name {
+  font-size: 34px;
+  color: #ff0000;
+}
+.secondary-article * {
+  font-family: proxima-thin;
+}
+#main-header {
+  display: flex;
+  justify-content: center;
+  height: 43px;
+  align-items: center;
+  padding: 5px;
+  font-family: proxima-nova;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+#main-header * {
+  display: flex;
+  justify-content: center;
+  height: 43px;
+  align-items: center;
+}
+
+#aside-header {
+  align-items: center;
+  display: flex;
+}
+
+#aside-header-text {
+  font-size: 17px;
+  text-indent: 10px;
+}
+
+#aside-header * {
+  height: 17px;
+  display: flex;
+  color: #044eb5;
+}
+
+#sign-in-label {
+  text-indent: 150px;
+}
+
+#mangnifying-glass {
+  padding: 28px;
+  height: 20px;
+  width: 20px;
+}
+
+#menu-icon {
+  height: 20px;
+  width: 20px;
+  padding: 10px;
+}
+
+#nav-main-header {
+  font-size: 18px;
+  text-indent: 10px;
+}
+
+#second-nav {
+  font-size: 15px;
+  padding: 5px;
+}
+
+#second-nav * {
+  display: flex;
+  justify-content: center;
+  height: 13px;
+  align-items: center;
+  font-family: proxima-thin;
+}
+
+.fire-nav {
+  height: 13px;
+  width: 13px;
+}
+
+nav {
+  left: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 15px;
+  padding: 0;
+  float: left;
+}
+
+nav ul li a {
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  color: #FFF;
+  text-align: center;
+}
+#main-article-title {
+  font-family: proxima-nova;
+  font-weight: bold;
+  font-size: 38px;
+  padding: 0;
+}
+#main-article {
+  display: flex;
+  flex-direction: column;
+}
+
+.secondary-article {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.secondary-article-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+}
+.secondary-article-title {
+  font-family: proxima-nova;
+  padding: 0;
+  margin: 0;
+}
+.secondary-article-text * {
+  justify-content: flex-start;
+  align-items: center;
+}
+.author {
+  display: flex;
+  justify-content: flex-start;
+  height: 10px;
+}
+.secondary-article-photo {
+  width: 225px;
+  height: 158px;
+}
+#aside-blue-line {
+  width: 350px;
+height: 5px;
+position: absolute;
+background: #044eb5;
+}
+.author * {
+  padding: 0;
+  margin: 0;
+}
+#profile-photo {
+  height: 22px;
+  width: 22px;
+}
+
+#author-name {
+  text-indent: 5px;
+}
+
+#time-lapsed {
+  font-size: 12px;
+  margin: 18px;
+}
