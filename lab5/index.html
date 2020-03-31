@@ -1,14 +1,356 @@
-<!-- Write a javascript which implements a vertical menu with 5 principal submenus and between 3 and 5 commponents for each submenu. -->
-
+<!-- Solve the following task using only the jQuery library
+(production version, jquery.min.js, or developement version, jquery.js);
+YOU ARE NOT ALLOWED TO USE ANY OTHER JS LIBRARY,
+PLUGIN OR EXTENSION BESIDES THE JQUERY LIBRARY.
+Write a web page which should implement tabbed-based navigation.
+The web page should contain on the top of the page minimum 5 tabs
+and each tab whould contain at least 2 images and 3 divs with text.
+When the user clicks on a tab from the top of the page,
+the contents of that tab will be displayed and the contents of all other
+tabs will be hidden.
+You are not allowed to use any independent CSS code
+(except CSS properties set through jquery method calls). -->
 <html>
 
 <head>
-  <link href="styles.css" type="text/css" rel="stylesheet" />
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
   <script src="script.js" charset="utf-8"></script>
+
 </head>
 
 <body>
-
+  <div class="homepage">
+    <ul class="nav-ul">
+      <li><button class="nav-button" onclick="showContent(event, 'voiculescu')">Vasile Voiculescu</button></li>
+      <li><button class="nav-button" onclick="showContent(event, 'stanescu')">Nichita Stanescu</button></li>
+      <li><button class="nav-button" onclick="showContent(event, 'blaga')">Lucian Blaga</button></li>
+      <li><button class="nav-button" onclick="showContent(event, 'eminescu')">Mihai Eminescu</button></li>
+      <li><button class="nav-button" onclick="showContent(event, 'gyr')">Radu Gyr</button></li>
+    </ul>
+<br>
+<br>
+<br>
+<br>
+<div id="page-description">
+<h2>Poets</h2>
+<p>This is my most basic page about poets. <br>
+Each page shall contain few representative poems <br>
+and 2 images that characterize the specified poet. </p>
+</div>
+</div>
+<article class="poet" id="voiculescu">
+  <h2>Vasile Voiculescu</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Vasile_Voiculescu.jpg" alt="" class="poet-image">
+<div class="poems">
+  <div class="poem">
+    <h3>Urcus</h3>
+    <p>Tu faci Sfinţenia-Ţi să mi s-arate <br>
+Ca mii de Himalai de diamant,<br>
+Cu văi in haos inrădăcinate <br>
+Şi piscuri sprijinite in neant. <br>
+<br>
+Şi-ncep să sui urcuşul Tău-nainte <br>
+Gheţar dumnezeiesc fără de vad... <br>
+De-alunec in prăpăstille sfinte <br>
+Nu-mi pasă, Doamne, tot in Tine cad.</p>
+  </div>
+  <div class="poem">
+    <h3>CLXXXIII</h3>
+<p>Mereu cerşim vieţii ani mai mulţi, aşa-n neştire, <br>
+Ne răzvrătim, ne plângem de pierderea noastră,<br>
+Şi încă nu-nţelegem că fără de iubire<br>
+Se vestejeşte Timpul în noi ca floarea-n glastră;<br>
+<br>
+Rupt din eternitate, el vrea ţărâm asemeni<br>
+Din care-altoiul şubred să-şi tragă seva nouă;<br>
+Noi îl primim cu gheaţă şi-l răsădim îcremeni<br>
+Când Dragostea-i unica vecie dată nouă.<br>
+<br>
+Ci-n van acum te mânii pe mine şi m-arunci,<br>
+Minunile iubirii n-au staile pe lume;<br>
+Ca Lazăr la auzul duioaselor porunci,<br>
+Oricând şi ori de unde mă vei striga pe nume,<br>
+Chiar de-aş zăcea în groapă cu lespedea pe mine,<br>
+Tot m-aş scula din moarte ca să alerg la tine.<br></p>
+  </div>
+  <div class="poem">
+        <h3>CCXXXV</h3>
+<p>Mă lupt să scap iubirea de pătimaşul trup,<br>
+Să n-o mai sorb cu ochii, să n-o mai muşc cu gura,<br>
+Din laţu-mpreunării sălbatice s-o rup,<br>
+S-o curăţesc de carne, ca de pe aur zgura;<br>
+Să te ador în suflet; doar duhul să-ţi aleg-<br>
+O veşnică-mbinare a doua raze line...<br>
+Dar cum te-arăţi, mă-ntunec... şi sufletul întreg<br>
+Se face ochi, piept, braţe... zbucnite către tine,<br>
+Pâlpâitor de pofte, iar dinainte-ţi cad;<br>
+Din nou vremelnicia îşi cască-n mine-abisul.<br>
+Rostogolit pe dâre de flăcări, ca-ntr-un iad,<br>
+Mă-ntorc, cântând în carne...Mă doare numai visul<br>
+Că mai presus de fire, putând să o răstoarne,<br>
+Iubirea e sămânţa eternităţii-n carne.<br></p>
+  </div>
+  </div>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Mount_Everest_as_seen_from_Drukair2_PLW_edit.jpg/270px-Mount_Everest_as_seen_from_Drukair2_PLW_edit.jpg" alt="" class="landscape-image">
+</article>
+<article class="poet" id="stanescu">
+  <h2>Nichita Stanescu</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/ro/1/1c/Nichita.jpg" alt="" class="poet-image">
+<div class="poems">
+  <div class="poem">
+    <h3>Imbratisarea</h3>
+    <p>Când ne-am zărit, aerul dintre noi <br>
+şi-a aruncat dintr-o dată <br>
+imaginea copacilor, indiferenţi şi goi, <br>
+pe care-o lasă să-l străbată. <br>
+<br>
+Oh, ne-am zvârlit, strigându-ne pe nume, <br>
+unul spre celălalt, şi-atât de iute, <br>
+că timpul se turti-ntre piepturile noastre, <br>
+şi ora, lovită, se sparse-n minute. <br>
+<br>
+Aş fi vrut să te păstrez în braţe <br>
+aşa cum ţin trupul copilăriei, întrecut, <br>
+cu morţile-i nerepetate. <br>
+Şi să te-mbrăţişez cu coastele-aş fi vrut.</p>
+  </div>
+  <div class="poem">
+    <h3>Mă învelesc de frig...</h3>
+<p>Mă învelesc de frig într-o speranţă <br>
+cum se-nveleşte soba nou zidită <br>
+în relieful de faianţă <br>
+cu focul pururi logodită. <br>
+ <br>
+Nu pune mâna peste mine dacă-i vară <br>
+căci n-ai să înţelegi nimic <br>
+stimată doamnă-domnişoară <br>
+din frig. <br>
+ <br>
+Ci vino când nu merge nimeni, <br>
+când nu avem picioare, vino <br>
+dar mai ales când voi fi orb, <br>
+lumino. <br></p>
+  </div>
+  <div class="poem">
+    <h3>De dragoste</h3>
+<p>Ea stă plictisită şi foarte frumoasă <br>
+părul ei negru este supărat <br>
+mâna ei luminoasă <br>
+demult m-a uitat, - <br>
+demult s-a uitat şi pe sine <br>
+cum atârnă pe ceafa scaunului. <br>
+ <br>
+Eu mă înec în lumine <br>
+şi scrişnesc în crugul anului. <br>
+Îi arăt dinţii din gură, <br>
+dar ea ştie că eu nu râd, <br>
+dulcea luminii faptură <br>
+mie, pe mine mă înfăţişează pe când <br>
+ea stă plictisită şi foarte frumoasa <br>
+şi eu numai pentru ea trăiesc <br>
+în lumea fioroasă <br>
+de sub ceresc. <br></p>
+  </div>
+  </div>
+  <img src="https://images.squarespace-cdn.com/content/v1/533214efe4b0e6650a1f09c5/1490209471127-RZ545PE16NQPPV59YDFB/ke17ZwdGBToddI8pDm48kFbxPuMoQOuAMjYvWB22VBMUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcl_UWDHYh_IdE-775gCeAiTPL96UsXg3jSENPubDtUtDavpVL-QYdlYLNIOG-Nud_/image-asset.jpeg" alt="" class="landscape-image">
+</article>
+<article class="poet" id="blaga">
+  <h2>Lucian Blaga</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/Lucian_Blaga_%282%29.jpg" alt="" class="poet-image">
+<div class="poems">
+  <div class="poem">
+    <h3>Noi si pamantul</h3>
+    <p>Atâtea stele cad în noaptea asta. <br>
+Demonul nopţii ţine parcă-n mâni pământul <br>
+şi suflă peste-o iască <br>
+năprasnic să-l aprindă. <br>
+În noaptea asta-n care cad <br>
+atâtea stele, tânărul său trup <br>
+de vrăjitoare-mi arde-n braţe<br>
+ca-n flăcările unui rug.<br>
+Nebun,<br>
+ca nişte limbi de foc eu braţele-mi întind,<br>
+ca să-ţi topesc zăpada umerilor goi,<br>
+şi ca să-ţi sorb, flămând să-ţi mistui<br>
+puterea, sângele, mândria, primăvara, totul.<br>
+În zori când ziua va aprinde noaptea,<br>
+Când scrumul nopţii o să piară dus<br>
+de-un vânt spre-apus,<br>
+în zori de zi aş vrea să fim şi noi<br>
+cenuşa,<br>
+noi şi - pământul. <br></p>
+  </div>
+  <div class="poem">
+    <h3>Primavara</h3>
+<p>A cunoaște. A iubi. <br>
+Încă-odată, iar si iară, <br>
+a cunoaște-nseamnă iarna, <br>
+a iubi e primăvară. <br>
+ <br>
+A iubi - aceasta vine <br>
+tare de departe-n mine. <br>
+A iubi - aceasta vine <br>
+tare de departe-n tine. <br>
+ <br>
+A cunoaste. A iubi. <br>
+Care-i drumul, ce te-ndeamna? <br>
+A cunoaste - ce-nseamna? <br>
+A iubi - de ce ti-e teama <br>
+printre flori si-n mare iarba? <br>
+ <br>
+Printre flori si-n mare iarba, <br>
+patima fara pacate <br>
+ne rastoarna-n infinit <br>
+cu rumoare si ardoare <br>
+de albine re-ncarnate. <br>
+ <br>
+Înc-odata, iar si iara <br>
+a iubi e primăvară. <br>
+</p>
+  </div>
+  <div class="poem">
+    <h3>Prezența ta</h3>
+<p>Te-ntrebi adesea îndoită care-i tîlcul<br>
+intrării tale-n sfera mea.<br>
+Să fii aş vrea nemulţumită de răspunsul<br>
+pe care apa-n murmur ţi-l va da.<br>
+<br>
+Adaos de lumină la caratele amiezii<br>
+şi enigmatic spor la tot ce e ascuns,<br>
+să fii de faţă – împlinire lipsei<br>
+lăuntrice – mi-ar fi de-ajuns.<br>
+<br>
+Prezenţa ta răscumpără un continent iubit,<br>
+ce adineaori a căzut învins,<br>
+ca un cărbune într-o apă<br>
+pentru vrajă stins.<br></p>
+  </div>
+  </div>
+  <img src="https://www.itl.cat/pngfile/big/70-702544_landscape-portrait-spring-landscapes-hd.jpg" alt="" class="landscape-image">
+</article>
+<article class="poet" id="eminescu">
+  <h2>Mihai Eminescu</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Eminescu.jpg" alt="" class="poet-image">
+<div class="poems">
+  <div class="poem">
+    <h3>Atât de fragedă</h3>
+<p>Atât de fragedă, te-asameni<br>
+Cu floarea albă de cireș,<br>
+Și ca un înger dintre oameni<br>
+În calea vieții mele ieși.<br>
+<br>
+Abia atingi covorul moale,<br>
+Mătasa sună sub picior,<br>
+Și de la creștet pân-în poale<br>
+Plutești ca visul de ușor.<br>
+<br>
+Din încrețirea lungii rochii<br>
+Răsai ca marmura în loc -<br>
+S-atârnă sufletu-mi de ochii<br>
+Cei plini de lacrimi și noroc.<br>
+<br>
+O, vis ferice de iubire,<br>
+Mireasă blândă din povești,<br>
+Nu mai zâmbi! A ta zâmbire<br>
+Mi-arată cât de dulce ești,<br>
+</p>
+  </div>
+  <div class="poem">
+    <h3>Rugaciunea unui dac</h3>
+<p>Pe când nu era moarte, nimic nemuritor,<br>
+Nici sâmburul luminii de viață dătător,<br>
+Nu era azi, nici mâne, nici ieri, nici totdeuna,<br>
+Căci unul erau toate și totul era una;<br>
+Pe când pământul, cerul, văzduhul, lumea toată<br>
+Erau din rândul celor ce n-au fost niciodată,<br>
+Pe-atunci erai Tu singur, încât mă-ntreb în sine-mi<br>
+Au cine-i zeul cărui plecăm a noastre inemi?<br></p>
+  </div>
+  <div class="poem">
+    <h3>Adio</h3>
+<p>De-acuma nu te-oi mai vedea,<br>
+Rămâi, rămâi, cu bine!<br>
+Mă voi feri în calea mea<br>
+De tine.<br>
+<br>
+De astăzi dar tu fă ce vrei,<br>
+De astăzi nu-mi mai pasă<br>
+Că cea mai dulce-ntre femei<br>
+Mă lasă.<br>
+<br>
+Căci nu mai am de obicei<br>
+Ca-n zilele acele,<br>
+Să mă îmbăt şi de scântei<br>
+Din stele,<br></p>
+  </div>
+  </div>
+  <img src="https://www.iucn.org/sites/dev/files/styles/850x500_no_menu_article/public/content/images/2016/forest_0.jpg?itok=Ht2DJi2n" alt="" class="landscape-image">
+</article>
+<article class="poet" id="gyr">
+  <h2>Radu Gyr</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/ro/thumb/8/85/Radu_Gyr.jpg/220px-Radu_Gyr.jpg" alt="" class="poet-image">
+<div class="poems">
+  <div class="poem">
+    <h3>Crezul</h3>
+<p>Puneti-mi lanturi si catuse<br>
+Sa sune scrasnetul hain<br>
+Si mii de lacate la use,<br>
+Eu tot ceia ce-am fost raman.<br>
+<br>
+Surpati asupra-mi munti si ape<br>
+Puteti chiar sa ma spanzurati.<br>
+Cu grele, negre tarnacoape,<br>
+Credinta nu mi-o sfaramati.<br>
+<br>
+Tarati-ma de vreti sub santuri<br>
+Si ingropati-mi trupul stins.<br>
+Eu sorb ca Fat-Frumos, din lanturi<br>
+Puteri adanci de neinvins.<br>
+<br>
+Puteti sa napustiti tot iadul<br>
+Ca sa ma franga pana'n miez.<br>
+Eu stau in viscole ca bradul<br>
+Si tare, tare ca un crez.<br></p>
+  </div>
+  <div class="poem">
+    <h3>Indemn la lupta</h3>
+<p>Nu dor nici luptele pierdute,<br>
+nici ranile din piept nu dor,<br>
+cum dor acele brate slute<br>
+care să lupte nu mai vor.<br>
+<br>
+Cat inima în piept iti canta<br>
+ce-nseamna-n lupta-un brat rapus ?<br>
+Ce-ti pasa-n colb de-o spada franta<br>
+când te ridici cu-n steag, mai sus ?<br>
+<br>
+Infrant nu esti atunci când sangeri,<br>
+nici ochii când în lacrimi ti-s.<br>
+Adevaratele infrangeri,<br>
+sunt renuntarile la vis.<br></p>
+  </div>
+  <div class="poem">
+    <h3>Antiteze</h3>
+<p>N-ai dezmierda, de n-ai ști să blestemi;<br>
+surâd numai acei care suspină<br>
+Azi n-ai zâmbi, de n-ar fi fost să gemi<br>
+de n-ai fi plâns, n-ai duce-n ochi lumină.<br>
+<br>
+Și dacă singur rana nu-ți legai<br>
+cu mâna ta n-ai unge răni străine<br>
+N-ai jindui după un colț de rai<br>
+de n-ai purta un strop de iad în tine.<br>
+<br>
+Căci nu te-nalți în slăvi până nu cazi<br>
+cu fruntea grea în pulberea amară.<br>
+Și dacă-nvii cu cântecul de azi<br>
+e c-ai murit cu lacrima de-aseară.<br></p>
+  </div>
+</div>
+  <img src="https://i.pinimg.com/originals/f8/f3/21/f8f3214206f4d08a7638df4f0debaa8f.jpg" alt="" class="landscape-image">
+</article>
 </body>
-
 </html>
