@@ -1,0 +1,175 @@
+<!-- Write a javascript which implements a vertical menu with 5 principal submenus and between 3 and 5 commponents for each submenu. -->
+
+<html>
+
+<head>
+  <link href="styles.css" type="text/css" rel="stylesheet" />
+  <script src="script.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <div class="tab">
+    <button class="menuButton" onclick="openSubmenu(event, 'Music')">Music</button>
+    <button class="menuButton" onclick="openSubmenu(event, 'Painting')">Painting</button>
+    <button class="menuButton" onclick="openSubmenu(event, 'Poetry')">Poetry</button>
+    <button class="menuButton" onclick="openSubmenu(event, 'Photography')">Photography</button>
+    <button class="menuButton" onclick="openSubmenu(event, 'Film')">Film</button>
+  </div>
+
+  <div id="Music" class="menuItem">
+    <h3>Music</h3>
+    <button class="submenuButton" onclick="openContent(event, 'love-alone')">Love alone is worth the fight</button>
+    <button class="submenuButton" onclick="openContent(event, 'amazing-grace')">Amazing grace</button>
+    <button class="submenuButton" onclick="openContent(event, 'it-is-well')">It is well</button>
+    <button class="submenuButton" onclick="openContent(event, 'rock-of-ages')">Rock of ages</button>
+  </div>
+
+  <div id="Painting" class="menuItem">
+    <h3>Painting</h3>
+    <button class="submenuButton" onclick="openContent(event, 'mona-lisa')">Mona Lisa</button>
+    <button class="submenuButton" onclick="openContent(event, 'momento-mori')">Momento mori</button>
+    <button class="submenuButton" onclick="openContent(event, 'st-augustine')">St. Augustine</button>
+  </div>
+
+  <div id="Poetry" class="menuItem">
+    <h3>Poetry</h3>
+    <button class="submenuButton" onclick="openContent(event, 'voiculescu')">V. Voiculescu</button>
+    <button class="submenuButton" onclick="openContent(event, 'blaga')">L. Blaga</button>
+    <button class="submenuButton" onclick="openContent(event, 'stanescu')">N. Stanescu</button>
+  </div>
+
+  <div id="Photography" class="menuItem">
+    <h3>Photography</h3>
+    <button class="submenuButton" onclick="openContent(event, 'churchill')">Churchill</button>
+    <button class="submenuButton" onclick="openContent(event, 'lincoln')">Lincoln</button>
+    <button class="submenuButton" onclick="openContent(event, 'stalin')">Stalin</button>
+  </div>
+
+  <div id="Film" class="menuItem">
+    <h3>Film</h3>
+    <button class="submenuButton" onclick="openContent(event, 'silence')">Silence</button>
+    <button class="submenuButton" onclick="openContent(event, 'vita-bella')">La vita e bella</button>
+    <button class="submenuButton" onclick="openContent(event, 'shawshank')">Shawshank redemption</button>
+  </div>
+
+  <div id="love-alone" class="submenuContent">
+    <h3>Love alone is worth the fight (Switchfoot)</h3>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/rk9Pj3ID0UE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div id="amazing-grace" class="submenuContent">
+    <h3>Amazing grace (Hymn)</h3>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/CDdvReNKKuk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div id="it-is-well" class="submenuContent">
+    <h3>It is well (Audrey Assad)</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zY5o9mP22V0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ </div>
+
+  <div id="rock-of-ages" class="submenuContent">
+    <h3>Rock of ages (Chris Rice)</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4oTsLDkirqA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div id="mona-lisa" class="submenuContent">
+    <h3>Mona Lisa (Leonardo da Vinci)</h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1200px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" width="225px" height="300px">
+  </div>
+
+  <div id="momento-mori" class="submenuContent">
+    <h3>Vanitas (Philippe de Champaigne)</h3>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/StillLifeWithASkull.jpg/220px-StillLifeWithASkull.jpg" alt="">
+  </div>
+
+  <div id="st-augustine" class="submenuContent">
+    <h3>St. Augustine (Philippe de Champaigne)</h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/220px-Saint_Augustine_by_Philippe_de_Champaigne.jpg" alt="">
+  </div>
+
+  <div id="voiculescu" class="submenuContent">
+    <h3>Urcus (V. Voiculescu)</h3>
+    <p>Tu faci Sfinţenia-Ţi să mi s-arate <br>
+Ca mii de Himalai de diamant,<br>
+Cu văi in haos inrădăcinate <br>
+Şi piscuri sprijinite in neant. <br>
+<br>
+Şi-ncep să sui urcuşul Tău-nainte <br>
+Gheţar dumnezeiesc fără de vad... <br>
+De-alunec in prăpăstille sfinte <br>
+Nu-mi pasă, Doamne, tot in Tine cad.</p>
+  </div>
+
+  <div id="blaga" class="submenuContent">
+    <h3>Noi si pamantul (L. Blaga)</h3>
+    <p>Atâtea stele cad în noaptea asta. <br>
+Demonul nopţii ţine parcă-n mâni pământul <br>
+şi suflă peste-o iască <br>
+năprasnic să-l aprindă. <br>
+În noaptea asta-n care cad <br>
+atâtea stele, tânărul său trup <br>
+de vrăjitoare-mi arde-n braţe<br>
+ca-n flăcările unui rug.<br>
+Nebun,<br>
+ca nişte limbi de foc eu braţele-mi întind,<br>
+ca să-ţi topesc zăpada umerilor goi,<br>
+şi ca să-ţi sorb, flămând să-ţi mistui<br>
+puterea, sângele, mândria, primăvara, totul.<br>
+În zori când ziua va aprinde noaptea,<br>
+Când scrumul nopţii o să piară dus<br>
+de-un vânt spre-apus,<br>
+în zori de zi aş vrea să fim şi noi<br>
+cenuşa,<br>
+noi şi - pământul.</p>
+  </div>
+
+  <div id="stanescu" class="submenuContent">
+    <h3>Imbratisarea (N. Stanescu)</h3>
+    <p>Când ne-am zărit, aerul dintre noi <br>
+şi-a aruncat dintr-o dată <br>
+imaginea copacilor, indiferenţi şi goi, <br>
+pe care-o lasă să-l străbată. <br>
+<br>
+Oh, ne-am zvârlit, strigându-ne pe nume, <br>
+unul spre celălalt, şi-atât de iute, <br>
+că timpul se turti-ntre piepturile noastre, <br>
+şi ora, lovită, se sparse-n minute. <br>
+<br>
+Aş fi vrut să te păstrez în braţe <br>
+aşa cum ţin trupul copilăriei, întrecut, <br>
+cu morţile-i nerepetate. <br>
+Şi să te-mbrăţişez cu coastele-aş fi vrut.</p>
+  </div>
+
+  <div id="churchill" class="submenuContent">
+    <h3>W. Churchill</h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Churchill_portrait_NYP_45063.jpg" width="225px" height="300px">
+  </div>
+
+  <div id="lincoln" class="submenuContent">
+    <h3>A. Lincoln</h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Abraham_Lincoln_head_on_shoulders_photo_portrait.jpg" width="225px" height="300px">
+  </div>
+
+  <div id="stalin" class="submenuContent">
+    <h3>I. Stalin</h3>
+  <img src="https://www.mediastorehouse.com/p/74/joseph-stalin-portrait-soviet-938650.jpg" width="225px" height="300px">
+  </div>
+
+  <div id="silence" class="submenuContent">
+    <h3>Silence (Martin Scorsese)</h3>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/A0KUWzfugg4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div id="vita-bella" class="submenuContent">
+    <h3>La vita e bella (Roberto Benigni)</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pAYEQP8gx3w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div id="shawshank" class="submenuContent">
+    <h3>Shawshank redemption (Frank Darabont)</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6hB3S9bIaco" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</body>
+
+</html>
