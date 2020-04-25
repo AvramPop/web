@@ -25,9 +25,12 @@ ChromePhp::log($_GET['action']);
             ChromePhp::log($_GET['title']);
 
                	$this->{$_GET['action']}($_GET['title']);
-	         }
+	         } else if ($_GET['action'] == "getAllStudents") {
+
+                	$this->{$_GET['action']}();
     }
   }
+}
 
     public function getUser($user) {
 	   $student = $this->model->getStudent($user);
@@ -37,10 +40,15 @@ ChromePhp::log($_GET['action']);
     }
 
     public function getBook($title) {
-     $book = $this->model->getBook($title);
+     $book = $this->model->getBookWithTitleLike($title);
      ChromePhp::log('getting book', $book);
 
      return $this->view->output($book);
+    }
+
+    public function getAllStudents() {
+      $students = $this->model->getAllStudents();
+      return $this->view->output($students);
     }
 }
 

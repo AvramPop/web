@@ -1,5 +1,6 @@
 <html>
 <head>
+  	<a href="index.html">Back</a>
   <h1>Students manager</h1>
 	<style type="text/css">
 		.mytablerow {
@@ -8,38 +9,31 @@
 	</style>
 	<script src="../js/jquery-2.0.3.js"></script>
 	<script language="javascript">
-		function showUser(student) {
-			var content = "ID: "+ student.id + "<br/>" +
-						  "Name: " + student.name + "<br/>" +
-						  "GroupID: " + student.group_id + "<br/>" +
-						  "Password: " + student.password + "<br/>";
+		function showStudents(students) {
+      var content = "<table border='1'><tr><th>ID</th><th>Name</th><th>Group</th></tr>";
+      for (const student of students){
+         content += "<tr><td>"+ student.id + "</td>" +
+                "<td>" + student.name + "</td>" +
+                "<td>" + student.group_id + "</td></tr>";
+
+      }
+      content += "</table>";
 			$("#main").html(content);
 		}
 
-		$(document).ready(function() {
-			$("#btn_getUser").click(function() {
-				$.getJSON(
-					"../../server/controller/controller.php",
-					{ action: "getUser", user: $('#user').val() },
-					showUser
-				)
-			});
-			});
+    $(function() {
+      $.getJSON(
+        "../../server/controller/controller.php",
+        { action: "getAllStudents" },
+        showStudents
+      )
+    });
+
 	</script>
 </head>
 <body>
 
-<section style="border: 1px solid red; width: 400px">
-Get student details:<br/>
-	Name: <input type="text" name="user" id="user"/> <br/>
-	<input type="button" id="btn_getUser" value="Get details"/><br/>
-</section>
-
-<p></p>
-
-
 <section id="main">
-  <a href="index.html">Back</a>
 
 </section>
 

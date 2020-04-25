@@ -32,8 +32,10 @@ class DBUtils {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-		public function selectBook($title) {
-					$stmt = $this->pdo->query("SELECT * FROM Books where title='" . $title ."'");
+		public function selectBooksWithIdentifierLike($identifier, $title) {
+			ChromePhp::log("SELECT * FROM Books where title LIKE '%" . $title ."%'");
+					$stmt = $this->pdo->query("SELECT * FROM Books where ". $identifier ." LIKE '%" . $title ."%'");
+
 					return $stmt->fetchAll(PDO::FETCH_ASSOC);
 			}
 
@@ -52,14 +54,23 @@ class DBUtils {
 		return $affected_rows;
 	}
 
-	public function deleteBook($id) {
-		$affected_rows = $this->pdo->exec("DELETE from Books where id=" . $id);
+	public function insertStudent($id, $name, $password, $group_id) {
+		$affected_rows = $this->pdo->exec("INSERT into Students values('". $id ."', '". $name ."', '". $password ."', '". $group_id ."')");
 		return $affected_rows;
 	}
 
-	public function updateBook ($id, $author, $title, $publisher, $genre) {
-		$affected_rows = $this->pdo->exec("UPDATE Books SET author='" . $author ."', title = '" . $title ."', publisher = '" . $publisher ."', genre =  '" . $genre ."' where id=" . $id);
+	public function deleteBook($id) {
+		$affected_rows = $this->pdo->exec("DELETE from Books where id='". $id ."' ");
+		return $affected_rows;
+	}
 
+	public function deleteStudent($id) {
+		$affected_rows = $this->pdo->exec("DELETE from Students where id='". $id ."' ");
+		return $affected_rows;
+	}
+
+	public function lendBook ($id, $borrower_id) {
+		$affected_rows = $this->pdo->exec("UPDATE Books SET borrower_id = '". $borrower_id ."' where id= '". $id ."' ");
 	}
 }
 
