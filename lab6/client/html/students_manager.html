@@ -1,0 +1,47 @@
+<html>
+<head>
+  <h1>Students manager</h1>
+	<style type="text/css">
+		.mytablerow {
+			background-color: #ff9999;
+		}
+	</style>
+	<script src="../js/jquery-2.0.3.js"></script>
+	<script language="javascript">
+		function showUser(student) {
+			var content = "ID: "+ student.id + "<br/>" +
+						  "Name: " + student.name + "<br/>" +
+						  "GroupID: " + student.group_id + "<br/>" +
+						  "Password: " + student.password + "<br/>";
+			$("#main").html(content);
+		}
+
+		$(document).ready(function() {
+			$("#btn_getUser").click(function() {
+				$.getJSON(
+					"../../server/controller/controller.php",
+					{ action: "getUser", user: $('#user').val() },
+					showUser
+				)
+			});
+			});
+	</script>
+</head>
+<body>
+
+<section style="border: 1px solid red; width: 400px">
+Get student details:<br/>
+	Name: <input type="text" name="user" id="user"/> <br/>
+	<input type="button" id="btn_getUser" value="Get details"/><br/>
+</section>
+
+<p></p>
+
+
+<section id="main">
+  <a href="index.html">Back</a>
+
+</section>
+
+</body>
+</html>
