@@ -20,9 +20,32 @@ class Model {
         return $student;
 	}
 
+	public function addStudent($name, $password, $groupId){
+		$this->db->insertStudent($name, $password, $groupId);
+	}
+
+	public function updateStudent($id, $name, $password, $groupId){
+		$this->db->updateStudent($id, $name, $password, $groupId);
+	}
+
+	public function removestudent($id){
+		$this->db->deleteStudent($id);
+	}
+
+
+	public function addBook($author, $title, $publisher, $genre){
+		$this->db->insertBook($author, $title, $publisher, $genre);
+	}
+
+	public function updateBook($id, $author, $title, $publisher, $genre){
+		$this->db->updateBook($id, $author, $title, $publisher, $genre);
+	}
+
+	public function removeBook($id){
+		$this->db->deleteBook($id);
+	}
 	public function getBookWithTitleLike($data) {
 		$resultset = $this->db->selectBooksWithIdentifierLike('title', $data);
-			//var_dump($resultset);
 				$book = new Book($resultset[0]['id'], $resultset[0]['author'], $resultset[0]['title'], $resultset[0]['publisher'], $resultset[0]['genre'], $resultset[0]['borrower_id']);
 				return $book;
 	}
@@ -38,21 +61,16 @@ class Model {
 		return $students;
 	}
 
-	// public function getAllGrades() {
-	// 	$resultset = $this->db->selectAllStudents();
-	// 	$students = array();
-	// 	foreach($resultset as $key=>$val) {
-	// 		$stud = $val;
-	//
-	//     	$grades = $this->db->selectGradeForStudent($stud['id']);
-	//     	$stud['grades'] = $grades;
-	//
-	//     	array_push($students, $stud);
-	// 	}
-	//
-	//     return $students;
-	// }
-
+	public function getAllBooks() {
+		$resultset = $this->db->selectAllBooks();
+		ChromePhp::log($resultset);
+		$books = array();
+		foreach ($resultset as $key => $value) {
+			array_push($books, $value);
+		}
+		ChromePhp::log($books);
+		return $books;
+	}
 }
 
 ?>

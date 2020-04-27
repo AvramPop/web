@@ -10,41 +10,128 @@
 	</style>
 	<script src="../js/jquery-2.0.3.js"></script>
 	<script language="javascript">
-		function showBook(book) {
-			console.log("showing book", book);
-			var content = "ID: "+ book.id + "<br/>" +
-							"Author: " + book.author + "<br/>" +
-							"Title: " + book.title + "<br/>" +
-							"Publisher: " + book.publisher + "<br/>" +
-							"Genre: " + book.genre + "<br/>" +
-							"Borrower: " + book.borrower_id + "<br/>";
-			$("#main").html(content);
-		}
+	function showBooks(books) {
 
-			$(document).ready(function() {
-				$("#btn_getBook").click(function() {
-					$.getJSON(
-						"../../server/controller/controller.php",
-						{ action: "getBook", title: $('#book').val() },
-						showBook
-					);
-				});
-		});
+		var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Publisher</th><th>Genre</th><th>Borrowed by</th></tr>";
+		for (var book of books) {
+							console.log(book);
+			if(!book.borrowed_by){
+
+				book.borrowed_by = "none";
+			}
+			content += "<tr><td>" + book.id + "</td>" +
+				"<td>" + book.author + "</td>" +
+				"<td>" + book.title + "</td>" +
+				"<td>" + book.publisher + "</td>" +
+				"<td>" + book.genre + "</td>" +
+				"<td>" + book.borrowed_by + "</td></tr>";
+
+		}
+		content += "</table>";
+		$("#all-books").html(content);
+	}
+
+	$(document).ready(function() {
+			$(function() {
+				$.getJSON(
+					"../../server/controller/controller.php", {
+						action: "getAllBooks"
+					},
+					showBooks
+				)
+			});
+
+
+
+
+			$("#remove-book-button").click(function() {
+				var bid = $("#id-to-remove").val();
+				$.post("../../server/controller/controller.php", {
+						action: "removeBook",
+						id: bid
+					},
+					function(data) {
+						location.reload();
+					}
+				);
+			});
+
+			$("#update-book-button").click(function() {
+				$.post("../../server/controller/controller.php", {
+						action: "updateBook",
+						id: $("#id-to-update").val(),
+						author: $("#author-to-update").val(),
+						title: $("#title-to-update").val(),
+						publisher: $("#publisher-to-update").val(),
+						genre: $("#genre-to-update").val()
+					},
+					function(data) {
+						location.reload();
+					}
+				);
+			});
+
+			$("#add-book-button").click(function() {
+				$.post("../../server/controller/controller.php", {
+						action: "addBook",
+						author: $("#author").val(),
+						title: $("#title").val(),
+						publisher: $("#publisher").val(),
+						genre: $("#genre").val()
+					},
+					function(data) {
+						location.reload();
+					}
+				);
+			});
+});
+
+
 	</script>
 </head>
 <body>
 
-<section style="border: 1px solid red; width: 400px">
-Get Book details:<br/>
-	Title: <input type="text" name="book" id="book"/> <br/>
-	<input type="button" id="btn_getBook" value="Get details"/><br/>
-</section>
-
 <p></p>
 
 
-<section id="main">
+<section id="all-books">
 </section>
+
+<h3>Add a new book</h3>
+<form>
+	<label for="Author">Author:</label>
+	<input type="text" id="author" name="author"><br><br>
+	<label for="Title">Title:</label>
+	<input type="text" id="title" name="title"><br><br>
+	<label for="Publisher">Publisher:</label>
+	<input type="text" id="publisher" name="publisher"><br><br>
+	<label for="Genre">Genre:</label>
+	<input type="text" id="genre" name="genre"><br><br>
+	<button type="button" id="add-book-button">Add</button>
+	<!-- <button type="submit" value="Add" id="add-student-button"> -->
+</form>
+<h3>Remove a book by id</h3>
+<form>
+	<label for="idToRemove">Id:</label>
+	<input type="text" id="id-to-remove" name="id-to-remove"><br><br>
+	<button type="button" id="remove-book-button">Remove</button>
+</form>
+</body>
+<h3>Update a book</h3>
+<form>
+<label for="idToUpdate">Id:</label>
+<input type="text" id="id-to-update" name="id-to-update"><br><br>
+<label for="Author">Author:</label>
+<input type="text" id="author-to-update" name="author-to-update"><br><br>
+<label for="Title">Title:</label>
+<input type="text" id="title-to-update" name="title-to-update"><br><br>
+<label for="Publisher">Publisher:</label>
+<input type="text" id="publisher-to-update" name="publisher-to-update"><br><br>
+<label for="Genre">Genre:</label>
+<input type="text" id="genre-to-update" name="genre-to-update"><br><br>
+<button type="button" id="update-book-button">Update</button>
+<!-- <button type="submit" value="Add" id="add-student-button"> -->
+</form>
 
 </body>
 </html>

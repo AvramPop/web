@@ -1,16 +1,48 @@
 <html>
 <head>
-  	<a href="index.html">Back</a>
-  <h1>Catalog</h1>
-  <h3>Search books by various criteria</h3>
+		<a href="index.html">Back</a>
+    <h1>Catalog</h1>
+    <h3>Search books by various criteria</h3>
+
 	<style type="text/css">
 		.mytablerow {
 			background-color: #ff9999;
 		}
 	</style>
 	<script src="../js/jquery-2.0.3.js"></script>
+	<script language="javascript">
+		function showBook(book) {
+			console.log("showing book", book);
+			var content = "ID: "+ book.id + "<br/>" +
+							"Author: " + book.author + "<br/>" +
+							"Title: " + book.title + "<br/>" +
+							"Publisher: " + book.publisher + "<br/>" +
+							"Genre: " + book.genre + "<br/>" +
+							"Borrower: " + book.borrower_id + "<br/>";
+			$("#main").html(content);
+		}
+
+			$(document).ready(function() {
+				$("#btn_getBook").click(function() {
+					$.getJSON(
+						"../../server/controller/controller.php",
+						{ action: "getBook", title: $('#book').val() },
+						showBook
+					);
+				});
+		});
+	</script>
 </head>
 <body>
+
+<section style="border: 1px solid red; width: 400px">
+Get Book details:<br/>
+	Title: <input type="text" name="book" id="book"/> <br/>
+	<input type="button" id="btn_getBook" value="Get details"/><br/>
+</section>
+
+<p></p>
+
 
 <section id="main">
 </section>

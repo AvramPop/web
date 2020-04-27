@@ -1,41 +1,120 @@
 <html>
+
 <head>
-  	<a href="index.html">Back</a>
+  <a href="index.html">Back</a>
   <h1>Students manager</h1>
-	<style type="text/css">
-		.mytablerow {
-			background-color: #ff9999;
-		}
-	</style>
-	<script src="../js/jquery-2.0.3.js"></script>
-	<script language="javascript">
-		function showStudents(students) {
+  <style type="text/css">
+    .mytablerow {
+      background-color: #ff9999;
+    }
+  </style>
+  <script src="../js/jquery-2.0.3.js"></script>
+  <script language="javascript">
+    function showStudents(students) {
+
       var content = "<table border='1'><tr><th>ID</th><th>Name</th><th>Group</th></tr>";
-      for (const student of students){
-         content += "<tr><td>"+ student.id + "</td>" +
-                "<td>" + student.name + "</td>" +
-                "<td>" + student.group_id + "</td></tr>";
+      for (const student of students) {
+        content += "<tr><td>" + student.id + "</td>" +
+          "<td>" + student.name + "</td>" +
+          "<td>" + student.group_id + "</td></tr>";
 
       }
       content += "</table>";
-			$("#main").html(content);
-		}
+      $("#all-students").html(content);
+    }
 
-    $(function() {
-      $.getJSON(
-        "../../server/controller/controller.php",
-        { action: "getAllStudents" },
-        showStudents
-      )
-    });
+    $(document).ready(function() {
+        $(function() {
+          $.getJSON(
+            "../../server/controller/controller.php", {
+              action: "getAllStudents"
+            },
+            showStudents
+          )
+        });
 
-	</script>
+        $("#remove-student-button").click(function() {
+          var sid = $("#id-to-remove").val();
+          $.post("../../server/controller/controller.php", {
+              action: "removeStudent",
+              id: sid
+            },
+            function(data) {
+              location.reload();
+            }
+          );
+        });
+
+        $("#update-student-button").click(function() {
+          $.post("../../server/controller/controller.php", {
+              action: "updateStudent",
+              id: $("#id-to-update").val(),
+              name: $("#name-to-update").val(),
+              password: $("#password-to-update").val(),
+              groupId: $("#group-to-update").val()
+            },
+            function(data) {
+              location.reload();
+            }
+          );
+        });
+
+        $("#add-student-button").click(function() {
+          var nameValue = $("#name").val();
+          var pass = $("#password").val();
+          var gid = $("#group").val();
+          $.post("../../server/controller/controller.php", {
+              action: "addStudent",
+              name: nameValue,
+              password: pass,
+              groupId: gid
+            },
+            function(data) {
+              location.reload();
+            }
+          );
+        });
+      }
+
+    );
+  </script>
 </head>
+
 <body>
 
-<section id="main">
+  <section id="all-students">
 
-</section>
-
+  </section>
+  <h3>Add a new student</h3>
+  <form>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+    <label for="group">Group:</label>
+    <input type="text" id="group" name="group"><br><br>
+    <button type="button" id="add-student-button">Add</button>
+    <!-- <button type="submit" value="Add" id="add-student-button"> -->
+  </form>
+  <h3>Remove a student by id</h3>
+  <form>
+    <label for="idToRemove">Id:</label>
+    <input type="text" id="id-to-remove" name="id-to-remove"><br><br>
+    <button type="button" id="remove-student-button">Remove</button>
+  </form>
 </body>
+<h3>Update a student</h3>
+<form>
+  <label for="idToUpdate">Id:</label>
+  <input type="text" id="id-to-update" name="id-to-update"><br><br>
+  <label for="nameToUpdate">Name:</label>
+  <input type="text" id="name-to-update" name="name-to-update"><br><br>
+  <label for="passwordToUpdate">Password:</label>
+  <input type="password" id="password-to-update" name="password-to-update"><br><br>
+  <label for="group">Group:</label>
+  <input type="text" id="group-to-update" name="group-to-update"><br><br>
+  <button type="button" id="update-student-button">Update</button>
+  <!-- <button type="submit" value="Add" id="add-student-button"> -->
+</form>
+
 </html>
