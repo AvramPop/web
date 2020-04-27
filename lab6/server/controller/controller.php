@@ -27,6 +27,12 @@ class Controller
       	$this->{$_GET['action']}();
       }  else if ($_GET['action'] == "getAllBooks") {
         $this->{$_GET['action']}();
+      } else if ($_GET['action'] == "getAllLentBooks") {
+        $this->{$_GET['action']}();
+      } else if ($_GET['action'] == "getAvailableBooks") {
+        $this->{$_GET['action']}();
+      } else if ($_GET['action'] == "searchBooks") {
+        $this->{$_GET['action']}($_GET['query']);
       }
     }
 
@@ -43,10 +49,36 @@ class Controller
       $this->{$_POST['action']}($_POST['id']);
     } else if ($_POST['action'] == "updateBook"){
       $this->{$_POST['action']}($_POST['id'], $_POST['author'], $_POST['title'], $_POST['publisher'], $_POST['genre']);
+    } else if ($_POST['action'] == "lendBook"){
+      $this->{$_POST['action']}($_POST['bid'], $_POST['sid']);
+    } else if ($_POST['action'] == "returnBook"){
+      $this->{$_POST['action']}($_POST['bid']);
     }
   }
 
 }
+  public function searchBooks($query){
+    $books = $this->model->searchBooks($query);
+    return $this->view->output($books);
+  }
+
+  public function getAllLentBooks(){
+    $books = $this->model->getAllLentBooks();
+    return $this->view->output($books);
+  }
+
+  public function getAvailableBooks(){
+    $books = $this->model->getAvailableBooks();
+    return $this->view->output($books);
+  }
+
+  public function lendBook($bid, $sid) {
+    $this->model->lendBook($bid, $sid);
+  }
+
+  public function returnBook($bid) {
+    $this->model->returnBook($bid);
+  }
 
     public function getUser($user) {
 	   $student = $this->model->getStudent($user);

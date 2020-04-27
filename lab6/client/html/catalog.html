@@ -11,23 +11,50 @@
 	</style>
 	<script src="../js/jquery-2.0.3.js"></script>
 	<script language="javascript">
-		function showBook(book) {
-			console.log("showing book", book);
-			var content = "ID: "+ book.id + "<br/>" +
-							"Author: " + book.author + "<br/>" +
-							"Title: " + book.title + "<br/>" +
-							"Publisher: " + book.publisher + "<br/>" +
-							"Genre: " + book.genre + "<br/>" +
-							"Borrower: " + book.borrower_id + "<br/>";
-			$("#main").html(content);
-		}
+	function showBooks(books) {
+		var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Publisher</th><th>Genre</th><th>Borrowed by</th></tr>";
+		for (var book of books) {
 
+			if(!book.borrowed_by){
+				book.borrowed_by = "none";
+			}
+			if(book.identifier == "author") book.author = "<b>" + book.author + "</b>";
+			if(book.identifier == "title") book.title = "<b>" + book.title + "</b>";
+			if(book.identifier == "publisher") book.publisher = "<b>" + book.publisher + "</b>";
+			if(book.identifier == "genre") book.genre = "<b>" + book.genre + "</b>";
+			content += "<tr><td>" + book.id + "</td>" +
+				"<td>" + book.author + "</td>" +
+				"<td>" + book.title + "</td>" +
+				"<td>" + book.publisher + "</td>" +
+				"<td>" + book.genre + "</td>" +
+				"<td>" + book.borrowed_by + "</td></tr>";
+
+		}
+		content += "</table>";
+		$("#search-result").html(content);
+	}
+
+function updateSearchHistory(queries){
+	var content = "<h4>Search history:<br>";
+	for(const query of queries){
+		content += query + "<br>";
+	}
+	content += "</h4>";
+	console.log(content);
+	$("#past-queries").html(content);
+}
 			$(document).ready(function() {
-				$("#btn_getBook").click(function() {
+				var searchHistory = [];
+				$("#search").click(function() {
+					 searchHistory.push($('#query').val());
+					 console.log(searchHistory);
 					$.getJSON(
 						"../../server/controller/controller.php",
-						{ action: "getBook", title: $('#book').val() },
-						showBook
+						{ action: "searchBooks", query: $('#query').val() },
+						function(data){
+							showBooks(data);
+							updateSearchHistory(searchHistory);
+						}
 					);
 				});
 		});
@@ -36,15 +63,17 @@
 <body>
 
 <section style="border: 1px solid red; width: 400px">
-Get Book details:<br/>
-	Title: <input type="text" name="book" id="book"/> <br/>
-	<input type="button" id="btn_getBook" value="Get details"/><br/>
+Search in books:<br/>
+	Query: <input type="text" name="query" id="query"/> <br/>
+	<input type="button" id="search" value="Search!"/><br/>
 </section>
 
 <p></p>
 
 
-<section id="main">
+<section id="search-result">
+</section>
+<section id="past-queries">
 </section>
 
 </body>

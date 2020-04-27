@@ -33,9 +33,13 @@ class DBUtils {
     }
 
 		public function selectBooksWithIdentifierLike($identifier, $title) {
-			ChromePhp::log("SELECT * FROM Books where title LIKE '%" . $title ."%'");
-					$stmt = $this->pdo->query("SELECT * FROM Books where ". $identifier ." LIKE '%" . $title ."%'");
-
+			ChromePhp::log(	"SELECT b.id, b.author, b.title, b.publisher, b.genre, s.name as borrowed_by, '". $identifier ."' as identifier
+				FROM books b left join students s on b.borrower_id = s.id
+				 where ". $identifier ." LIKE '%" . $title ."%'");
+					$stmt = $this->pdo->query(
+						"SELECT b.id, b.author, b.title, b.publisher, b.genre, s.name as borrowed_by, '". $identifier ."' as identifier
+						FROM books b left join students s on b.borrower_id = s.id
+						 where ". $identifier ." LIKE '%" . $title ."%'");
 					return $stmt->fetchAll(PDO::FETCH_ASSOC);
 			}
 
@@ -45,8 +49,19 @@ class DBUtils {
     }
 
 		public function selectAllBooks() {
-
 			$stmt = $this->pdo->query("SELECT b.id, b.author, b.title, b.publisher, b.genre, s.name as borrowed_by FROM books b left join students s on b.borrower_id = s.id");
+				return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+
+		public function getAllLentBooks() {
+			ChromePhp::log("SELECT b.id, b.author, b.title, s.name as borrowed_by FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is not NULL");
+
+			$stmt = $this->pdo->query("SELECT b.id, b.author, b.title, s.name as borrowed_by FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is not NULL");
+				return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+
+		public function getAvailableBooks() {
+			$stmt = $this->pdo->query("SELECT b.id, b.author, b.title, s.name as borrowed_by FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is NULL");
 				return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 
@@ -82,6 +97,10 @@ class DBUtils {
 
 	public function lendBook ($id, $borrower_id) {
 		$this->pdo->exec("UPDATE Books SET borrower_id = '". $borrower_id ."' where id= ". $id ." ");
+	}
+
+	public function returnBook ($bid) {
+		$this->pdo->exec("UPDATE Books SET borrower_id = NULL where id= ". $bid ." ");
 	}
 }
 

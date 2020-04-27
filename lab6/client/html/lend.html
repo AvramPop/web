@@ -1,16 +1,101 @@
 <html>
 <head>
   	<a href="index.html">Back</a>
-  <h1>Lend a book</h1>
+  <h1>Lending manager</h1>
 	<style type="text/css">
 		.mytablerow {
 			background-color: #ff9999;
 		}
 	</style>
 	<script src="../js/jquery-2.0.3.js"></script>
+  <script>
+  function showBooks(books, element) {
+    console.log(books);
+    console.log(element);
+
+		var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Lent to</th></tr>";
+		for (var book of books) {
+      if(!book.borrowed_by){
+        book.borrowed_by = "none";
+      }
+			content += "<tr><td>" + book.id + "</td>" +
+				"<td>" + book.author + "</td>" +
+				"<td>" + book.title + "</td>" +
+				"<td>" + book.borrowed_by + "</td></tr>";
+
+		}
+		content += "</table>";
+		$(element).html(content);
+	}
+
+
+  $(document).ready(function() {
+
+				$.getJSON(
+					"../../server/controller/controller.php", {
+						action: "getAllLentBooks"
+					},
+					function (data){
+            showBooks(data, "#lent-books");}
+				);
+
+        $.getJSON(
+          "../../server/controller/controller.php", {
+            action: "getAvailableBooks"
+          },
+          function(data){
+            console.log("available++++++++");
+            showBooks(data, "#available-books");}
+        );
+
+
+			$("#lend-book-button").click(function() {
+				$.post("../../server/controller/controller.php", {
+						action: "lendBook",
+						bid: $("#lend-id").val(),
+            sid: $("#student-id").val()
+					},
+					function(data) {
+						location.reload();
+					}
+				);
+			});
+
+			$("#return-book-button").click(function() {
+				$.post("../../server/controller/controller.php", {
+						action: "returnBook",
+						bid: $("#return-id").val(),
+					},
+					function(data) {
+						location.reload();
+					}
+				);
+			});
+});
+  </script>
 </head>
 <body>
 
-<section id="main"></section>
+    <h3>Return book</h3>
+  <section id="lent-books">
+  </section>
+
+  <form>
+  	<label for="Id">Book id:</label>
+  	<input type="text" id="return-id" name="return-id">
+  	<button type="button" id="return-book-button">Return</button>
+  </form>
+  <h3>Lend book</h3>
+  <section id="available-books">
+  </section>
+
+
+  <form>
+    <label for="Id">Book id:</label>
+    <input type="text" id="lend-id" name="lend-id">
+    <label for="Id">Student id:</label>
+    <input type="text" id="student-id" name="student-id">
+    <button type="button" id="lend-book-button">Lend</button>
+  </form>
 </body>
 </html>

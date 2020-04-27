@@ -44,31 +44,85 @@ class Model {
 	public function removeBook($id){
 		$this->db->deleteBook($id);
 	}
-	public function getBookWithTitleLike($data) {
-		$resultset = $this->db->selectBooksWithIdentifierLike('title', $data);
-				$book = new Book($resultset[0]['id'], $resultset[0]['author'], $resultset[0]['title'], $resultset[0]['publisher'], $resultset[0]['genre'], $resultset[0]['borrower_id']);
-				return $book;
+
+		public function inArray($value, $list){
+			foreach ($list as $item) {
+				if($item['id'] == $value['id']) return true;
+			}
+			return false;
+		}
+
+	public function searchBooks($query) {
+				$books = array();
+				$resultset = $this->db->selectBooksWithIdentifierLike('author', $query);
+				foreach ($resultset as $key => $value) {
+					if($this->inArray($value, $books) == false){
+					 array_push($books, $value);
+				 }
+				}
+				$resultset = $this->db->selectBooksWithIdentifierLike('title', $query);
+				foreach ($resultset as $key => $value) {
+					if($this->inArray($value, $books) == false){
+					array_push($books, $value);
+				}
+				}
+				$resultset = $this->db->selectBooksWithIdentifierLike('publisher', $query);
+				foreach ($resultset as $key => $value) {
+					if($this->inArray($value, $books)  == false){
+					array_push($books, $value);
+				}
+				}
+				$resultset = $this->db->selectBooksWithIdentifierLike('genre', $query);
+				foreach ($resultset as $key => $value) {
+					if($this->inArray($value, $books)  == false){
+					array_push($books, $value);
+				}
+				}
+				return $books;
+	}
+
+
+	public function getAllLentBooks(){
+		$resultset = $this->db->getAllLentBooks();
+		$books = array();
+		foreach ($resultset as $key => $value) {
+			array_push($books, $value);
+		}
+		return $books;
+	}
+
+	public function getAvailableBooks(){
+		$resultset = $this->db->getAvailableBooks();
+		$books = array();
+		foreach ($resultset as $key => $value) {
+			array_push($books, $value);
+		}
+		return $books;
+	}
+
+	public function lendBook($bid, $sid) {
+		$this->db->lendBook($bid, $sid);
+	}
+
+	public function returnBook($bid) {
+		$this->db->returnBook($bid);
 	}
 
 	public function getAllStudents() {
 		$resultset = $this->db->selectAllStudents();
-		ChromePhp::log($resultset);
 		$students = array();
 		foreach ($resultset as $key => $value) {
 			array_push($students, $value);
 		}
-		ChromePhp::log($students);
 		return $students;
 	}
 
 	public function getAllBooks() {
 		$resultset = $this->db->selectAllBooks();
-		ChromePhp::log($resultset);
 		$books = array();
 		foreach ($resultset as $key => $value) {
 			array_push($books, $value);
 		}
-		ChromePhp::log($books);
 		return $books;
 	}
 }
