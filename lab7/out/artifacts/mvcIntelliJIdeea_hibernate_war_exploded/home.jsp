@@ -12,10 +12,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Home</title>
     <style>
-        .asset-name {
-            background-color: cornflowerblue;
-            border-right: solid 1px black;
+
+        input[type=text]:focus {
+            background-color: lightblue;
         }
+
+        button {background-color: #008CBA;}
+        h2 {
+            font-weight: bold;
+        }
+
     </style>
     <script src="js/jquery-2.0.3.js"></script>
     <script src="js/ajax-utils.js"></script>
@@ -60,11 +66,19 @@
 <script>
     $(document).ready(function () {
         $("#create-session-btn").click(function () {
-            if(parseInt($("#total-questions").val()) >= parseInt($("#questions-per-page").val())) {
-            createSession($("#total-questions").val(),
-                $("#questions-per-page").val());
+            if($("#total-questions").val().length && $("#questions-per-page").val().length) {
+                if(!isNaN($("#total-questions").val()) && !isNaN($("#questions-per-page").val())) {
+                    if (parseInt($("#total-questions").val()) >= parseInt($("#questions-per-page").val())) {
+                        createSession($("#total-questions").val(),
+                            $("#questions-per-page").val());
+                    } else {
+                        alert("The total number of questions should be bigger than the number of questions on a page. Try again");
+                    }
+                } else {
+                    alert("Both field should be numeric");
+                }
             } else {
-                alert("The total number of questions should be bigger than the number of questions on a page. Try again");
+                alert("Both field should be non-empty");
             }
         });
         $("#logout-btn").click(function () {

@@ -11,6 +11,18 @@
 <html>
 <head>
     <title>Quiz</title>
+    <style>
+        form {
+            margin-left: auto;
+            margin-right: auto;
+            width: 400px;
+        }
+        h2 {
+            font-weight: bold;
+        }
+        button {background-color: #008CBA;}
+
+    </style>
     <script src="js/jquery-2.0.3.js"></script>
     <script src="js/ajax-utils.js"></script>
 </head>
@@ -30,8 +42,8 @@
         var content = "";
         for (let i = 0; i < questions.length; i++) {
             content += "<h4><b>" + questions[i]["question"] + "</b></h4>";
-            content += "<input type = \"radio\" name = \"" + i + "\" value = \"1\">" + questions[i]["answer1"];
-            content += "<input type = \"radio\" name = \"" + i + "\" value = \"2\">" + questions[i]["answer2"];
+            content += "<input type = \"radio\" name = \"" + i + "\" value = \"1\">" + questions[i]["answer1"] + "<br>";
+            content += "<input type = \"radio\" name = \"" + i + "\" value = \"2\">" + questions[i]["answer2"] + "<br>";
             content += "<input type = \"radio\" name = \"" + i + "\" value = \"3\">" + questions[i]["answer3"] + "<br>";
         }
         $("#questions").html(content);

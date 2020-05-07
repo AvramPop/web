@@ -9,6 +9,12 @@
 <html>
 <head>
     <title>Result</title>
+    <style>
+        h3 {
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 <body>
 <h1>Your quiz is done</h1>

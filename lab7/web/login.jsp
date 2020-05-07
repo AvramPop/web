@@ -18,12 +18,17 @@
       margin-right: auto;
       width: 400px;
     }
+
+    button {background-color: #008CBA;}
+    form {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 <form action="/login" method="post">
-  Enter username : <input type="text" name="username"> <BR>
-  Enter password : <input type="password" name="password"> <BR>
+  Username : <input type="text" name="username"> <BR>
+  Password : <input type="password" name="password"> <BR>
   <input type="submit" value="Login"/>
 </form>
 </body></html>
