@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Web;
 
@@ -10,7 +11,7 @@ namespace AspMVCex.DataAbstractionLayer
 {
     public class DB
     {
-        private string connectionString = "server=localhost;uid=root;pwd=;database=wp;";
+        private string connectionString = "server=localhost;uid=root;pwd=;database=library;";
         private MySql.Data.MySqlClient.MySqlConnection connection;
 
         public Student selectStudent(string name)
@@ -40,8 +41,8 @@ namespace AspMVCex.DataAbstractionLayer
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return null;
             }
-            return null;
 
         }
 
@@ -72,8 +73,8 @@ namespace AspMVCex.DataAbstractionLayer
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return null;
             }
-            return null;
 
         }
 
@@ -107,9 +108,54 @@ namespace AspMVCex.DataAbstractionLayer
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
             return students.Count == 1;
 
+        }
+
+        public List<Book> getAllBooks()
+        {
+            List<Book> books = new List<Book>();
+
+            try
+            {
+                connection = new MySql.Data.MySqlClient.MySqlConnection();
+
+                connection.ConnectionString = connectionString;
+                connection.Open();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
+                cmd.CommandText = "SELECT * from books";
+                MySqlDataReader myreader = cmd.ExecuteReader();
+
+                while (myreader.Read())
+                {
+                    Book book = new Book();
+                    book.id = myreader.GetInt32("id");
+                    book.author = myreader.GetString("author");
+                    book.title = myreader.GetString("title");
+                    book.publisher = myreader.GetString("publisher");
+                    book.genre = myreader.GetString("genre");
+                    try
+                    {
+                        book.borrowerId = myreader.GetInt32("borrower_id");
+                    }
+                    catch (SqlNullValueException e)
+                    {
+                        book.borrowerId = -1;
+                    }
+                    books.Add(book);
+                }
+                myreader.Close();
+                connection.Close();
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return books;
         }
 
 
@@ -119,6 +165,7 @@ namespace AspMVCex.DataAbstractionLayer
 
             try
             {
+                connection = new MySql.Data.MySqlClient.MySqlConnection();
                 connection.ConnectionString = connectionString;
                 connection.Open();
 
@@ -135,7 +182,13 @@ namespace AspMVCex.DataAbstractionLayer
                     book.title = myreader.GetString("title");
                     book.publisher = myreader.GetString("publisher");
                     book.genre = myreader.GetString("genre");
+                    try { 
                     book.borrowerId = myreader.GetInt32("borrower_id");
+                    }
+                    catch (SqlNullValueException e)
+                    {
+                        book.borrowerId = -1;
+                    }
                     books.Add(book);
                 }
                 myreader.Close();
@@ -170,9 +223,11 @@ namespace AspMVCex.DataAbstractionLayer
                     stud.id = myreader.GetInt32("id");
                     stud.name = myreader.GetString("name");
                     stud.groupId = myreader.GetInt32("group_id");
+                    Console.WriteLine(stud.name);
                     students.Add(stud);
                 }
                 myreader.Close();
+                connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
@@ -182,64 +237,37 @@ namespace AspMVCex.DataAbstractionLayer
 
         }
 
-        public List<Book> selectAllBooks()
-        {
-            List<Book> books = new List<Book>();
-
-            try
-            {
-                connection.ConnectionString = connectionString;
-                connection.Open();
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = connection;
-                cmd.CommandText = "SELECT * from books";
-                MySqlDataReader myreader = cmd.ExecuteReader();
-
-                while (myreader.Read())
-                {
-                    Book book = new Book();
-                    book.id = myreader.GetInt32("id");
-                    book.author = myreader.GetString("author");
-                    book.title = myreader.GetString("title");
-                    book.publisher = myreader.GetString("publisher");
-                    book.genre = myreader.GetString("genre");
-                    book.borrowerId = myreader.GetInt32("borrower_id");
-                    books.Add(book);
-                }
-                myreader.Close();
-                connection.Close();
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Console.Write(ex.Message);
-            }
-            return books;
-        }
-
         public List<Book> getAllLentBooks()
         {
             List<Book> books = new List<Book>();
 
             try
             {
+                connection = new MySql.Data.MySqlClient.MySqlConnection();
+
                 connection.ConnectionString = connectionString;
                 connection.Open();
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
-                cmd.CommandText = "SELECT b.id, b.author, b.title, b.publisher, b.genre, b.borrower_id FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is not NULL";
+                cmd.CommandText = "SELECT b.id as bid, b.author as bauthor, b.title as btitle, b.publisher as bpublisher, b.genre as bgenre, b.borrower_id as bborrower_id FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is not NULL";
                 MySqlDataReader myreader = cmd.ExecuteReader();
 
                 while (myreader.Read())
                 {
                     Book book = new Book();
-                    book.id = myreader.GetInt32("b.id");
-                    book.author = myreader.GetString("b.author");
-                    book.title = myreader.GetString("b.title");
-                    book.publisher = myreader.GetString("b.publisher");
-                    book.genre = myreader.GetString("b.genre");
-                    book.borrowerId = myreader.GetInt32("b.borrower_id");
+                    book.id = myreader.GetInt32("bid");
+                    book.author = myreader.GetString("bauthor");
+                    book.title = myreader.GetString("btitle");
+                    book.publisher = myreader.GetString("bpublisher");
+                    book.genre = myreader.GetString("bgenre");
+                    try { 
+                    book.borrowerId = myreader.GetInt32("bborrower_id");
+                    }
+                    catch (SqlNullValueException e)
+                    {
+                        book.borrowerId = -1;
+                    }
                     books.Add(book);
                 }
                 myreader.Close();
@@ -258,23 +286,31 @@ namespace AspMVCex.DataAbstractionLayer
 
             try
             {
+                connection = new MySql.Data.MySqlClient.MySqlConnection();
+
                 connection.ConnectionString = connectionString;
                 connection.Open();
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
-                cmd.CommandText = "SELECT b.id, b.author, b.title, b.publisher, b.genre, b.borrower_id FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is NULL";
+                cmd.CommandText = "SELECT b.id as bid, b.author as bauthor, b.title as btitle, b.publisher as bpublisher, b.genre as bgenre, b.borrower_id as bborrower_id FROM books b left join students s on b.borrower_id = s.id where b.borrower_id is NULL";
                 MySqlDataReader myreader = cmd.ExecuteReader();
 
                 while (myreader.Read())
                 {
                     Book book = new Book();
-                    book.id = myreader.GetInt32("b.id");
-                    book.author = myreader.GetString("b.author");
-                    book.title = myreader.GetString("b.title");
-                    book.publisher = myreader.GetString("b.publisher");
-                    book.genre = myreader.GetString("b.genre");
-                    book.borrowerId = myreader.GetInt32("b.borrower_id");
+                    book.id = myreader.GetInt32("bid");
+                    book.author = myreader.GetString("bauthor");
+                    book.title = myreader.GetString("btitle");
+                    book.publisher = myreader.GetString("bpublisher");
+                    book.genre = myreader.GetString("bgenre");
+                    try { 
+                    book.borrowerId = myreader.GetInt32("bborrower_id");
+                                            }
+                    catch (SqlNullValueException e)
+                    {
+                        book.borrowerId = -1;
+                    }
                     books.Add(book);
                 }
                 myreader.Close();
@@ -288,10 +324,10 @@ namespace AspMVCex.DataAbstractionLayer
         }
 
 
-        public void saveBook(Book book)
+        public bool saveBook(Book book)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -301,20 +337,23 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "insert into books(author, title, publisher, genre, borrower_id) values(\'"
-                    + book.author + "\',\'" + book.title + "\',\'" + book.publisher + "\',\'" + book.genre + "\'," + book.borrowerId + ")";
-                cmd.ExecuteNonQuery();
+                    + book.author + "\',\'" + book.title + "\',\'" + book.publisher + "\',\'" + book.genre + "\', NULL)";
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
+                
             }
-
+            return rowsAffected == 1;
         }
 
-        public void saveStudent(Student student)
+        public bool saveStudent(Student student)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
+            int rowsAffected = 0;
 
             try
             {
@@ -325,20 +364,22 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "insert into students(name, group_id) values(\'" + student.name + "\'," + student.groupId + ")";
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
+            return rowsAffected == 1;
 
         }
 
-        public void deleteStudent(int studentId)
+        public bool deleteStudent(int studentId)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -348,20 +389,21 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "delete from students where id = " + studentId;
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
-
+            return rowsAffected == 1;
         }
 
-        public void deleteBook(int bookid)
+        public bool deleteBook(int bookid)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -371,20 +413,22 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "delete from books where id = " + bookid;
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
+            return rowsAffected == 1;
 
         }
 
-        public void lendBook(int borrowerId, int id)
+        public bool lendBook(int borrowerId, int id)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -394,21 +438,23 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "UPDATE books SET borrower_id = " + borrowerId + " where id = " + id;
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
+            return rowsAffected == 1;
 
         }
 
 
-        public void returnBook(int id)
+        public bool returnBook(int id)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -418,20 +464,21 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "UPDATE books SET borrower_id = NULL where id = " + id;
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
-
+            return rowsAffected == 1;
         }
 
-        public void updateStudent(int id, int group, string name)
+        public bool updateStudent(int id, int group, string name)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -441,20 +488,21 @@ namespace AspMVCex.DataAbstractionLayer
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
                 cmd.CommandText = "UPDATE students SET name = \'" + name + "\', group_id = " + group + " where id = " + id;
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
-
+            return rowsAffected == 1;
         }
 
-        public void updateBook(int id, string author, string title, string publisher, string genre)
+        public bool updateBook(int id, string author, string title, string publisher, string genre)
         {
             MySql.Data.MySqlClient.MySqlConnection connection;
-
+            int rowsAffected = 0;
             try
             {
                 connection = new MySql.Data.MySqlClient.MySqlConnection();
@@ -465,14 +513,15 @@ namespace AspMVCex.DataAbstractionLayer
                 cmd.Connection = connection;
                 cmd.CommandText = "UPDATE books SET author = \'" + author + "\', title = \'" + title + "\', publisher = \'" +
                     publisher + "\', genre = \'" + genre + "\' where id = " + id;
-                cmd.ExecuteNonQuery();
+                rowsAffected = cmd.ExecuteNonQuery();
                 connection.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.Write(ex.Message);
+                return false;
             }
-
+            return rowsAffected == 1;
         }
     }
 }

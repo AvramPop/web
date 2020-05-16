@@ -1,0 +1,172 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewBook</title>
+    <script src="~/Scripts/jquery-2.0.3.js"></script>
+    <script language="javascript">
+        function showBooks(books) {
+            var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Publisher</th><th>Genre</th><th>Borrowed by</th></tr>";
+            for (var book of books) {
+                console.log(book);
+                if (book.borrowerId === -1 || book.borrowerId == -1) {
+                    book.borrowerId = "none";
+                }
+                let deleteName = "delete-book-" + book.id + "-button";
+                let updateName = "update-book-" + book.id + "-button";
+                content += "<tr><td>" + book.id + "</td>" +
+                    "<td>" + book.author + "</td>" +
+                    "<td>" + book.title + "</td>" +
+                    "<td>" + book.publisher + "</td>" +
+                    "<td>" + book.genre + "</td>" +
+                    "<td>" + book.borrowerId + "</td>" +
+                    "<td><button type=\"button\" id=\"" + deleteName + "\">Delete</button></td>" +
+                    "<td><button type=\"button\" id=\"" + updateName + "\">Update</button></td>" +
+                    "</tr>";
+
+            }
+            content += "</table>";
+            $("#all-books").html(content);
+        }
+
+        function setDeleteButtons(books) {
+            for (const book of books) {
+                let buttonName = "#delete-book-" + book.id + "-button";
+                $(buttonName).click(function () {
+                    if (confirm('Are you sure you want to delete book ' + book.title + ' from the database?')) {
+                        $.post("/Book/DeleteBook", {
+                            id: book.id
+                        },
+                            function (data, status) {
+                                if (data["success"] === true) {
+                                    location.reload();
+                                } else {
+                                    alert("couldn't delete");
+                                }
+                            }
+                        );
+                    } else {
+                    }
+
+                });
+            }
+        }
+
+        function setUpdateButtons(books) {
+            for (const book of books) {
+                let buttonName = "#update-book-" + book.id + "-button";
+                $(buttonName).click(function () {
+                    let formButton = "update-book-" + book.id + "-button-form";
+                    let content = "<form><label for=\"author\">Author:</label><input type=\"text\" id=\"author-" + book.id + "\" name=\"author\" value=\"" + book.author + "\"><br><br>" +
+                        "<label for=\"title\">Title:</label><input type=\"text\" id=\"title-" + book.id + "\" name=\"title\" value = \"" + book.title + "\"><br><br>" +
+                        "<label for=\"publisher\">Publisher:</label><input type=\"text\" id=\"publisher-" + book.id + "\" name=\"v\" value = \"" + book.publisher + "\"><br><br>" +
+                        "<label for=\"genre\">Genre:</label><input type=\"text\" id=\"genre-" + book.id + "\" name=\"genre\" value = \"" + book.genre + "\"><br><br>" +
+                        "<button type=\"button\" id=\"" + formButton + "\">Update</button></form>";
+                    console.log(content);
+                    $("#update").html(content);
+                    $("#" + formButton).click(function () {
+
+                        if (confirm('Are you sure you want to update book ' + book.title + ' in the database?')) {
+                            var authorValue = $("#author-" + book.id).val();
+                            var titleValue = $("#title-" + book.id).val();
+                            var publisherValue = $("#publisher-" + book.id).val();
+                            var genreValue = $("#genre-" + book.id).val();
+                            if (authorValue.length && titleValue.length && publisherValue.length && genreValue.length) {
+                                    $.post("/Book/UpdateBook", {
+                                        id: book.id,
+                                        title: titleValue,
+                                        author: authorValue,
+                                        publisher: publisherValue,
+                                        genre: genreValue
+                                    },
+                                        function (data, status) {
+                                            if (data["success"] === true) {
+                                                location.reload();
+                                            } else {
+                                                alert("couldn't delete");
+                                            }
+                                        }
+                                    );
+                            } else {
+                                alert("Fields should be non-empty");
+                            }
+                        } else {
+                        }
+
+                    });
+                });
+            }
+        }
+
+
+
+        $(document).ready(function () {
+            Array.prototype.pushArray = function (arr) {
+                this.push.apply(this, arr);
+            };
+
+            var books = [];
+            $(function () {
+                $.getJSON(
+                    "/Book/GetBooks", {}, function (data, status) {
+                        books.pushArray(data["books"]);
+                        showBooks(books);
+                        setDeleteButtons(books);
+                        setUpdateButtons(books);
+                    }
+                )
+            });
+
+            $("#add-book-button").click(function () {
+                var authorValue = $("#author").val();
+                var titleValue = $("#title").val();
+                var publisherValue = $("#publisher").val();
+                var genreValue = $("#genre").val();
+                if (authorValue.length && titleValue.length && publisherValue.length && genreValue.length) {
+                    $.post("/Book/AddBook", {
+                        author: authorValue,
+                        title: titleValue,
+                        publisher: publisherValue,
+                        genre: genreValue
+                    },
+                        function (data, status) {
+                            if (data["success"] === true) {
+                                location.reload();
+                            } else {
+                                alert("your data is invalid");
+                            }
+                        }
+                    );
+                } else {
+                    alert("Fields should be non-empty");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <a href="/Menu">Home</a>
+    <section id="all-books">
+    </section>
+
+    <h3>Add a new Book</h3>
+    <form>
+        <label for="Author">Author:</label>
+        <input type="text" id="author" name="author"><br><br>
+        <label for="Title">Title:</label>
+        <input type="text" id="title" name="title"><br><br>
+        <label for="Publisher">Publisher:</label>
+        <input type="text" id="publisher" name="publisher"><br><br>
+        <label for="Genre">Genre:</label>
+        <input type="text" id="genre" name="genre"><br><br>
+        <button type="button" id="add-book-button">Add</button>
+    </form>
+    <section id="update"></section>
+</body>
+</html>

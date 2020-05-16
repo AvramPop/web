@@ -1,0 +1,156 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewLend</title>
+    <script src="~/Scripts/jquery-2.0.3.js"></script>
+    <script language="javascript">
+        function showAvailableBooks(books) {
+            var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th></tr>";
+            for (var book of books) {
+                if (book.borrowerId == -1 || book.borrowerId === -1) {
+                    book.borrowerId = "none";
+                }
+                let lendName = "lend-book-" + book.id + "-button";
+                content += "<tr><td>" + book.id + "</td>" +
+                    "<td>" + book.author + "</td>" +
+                    "<td>" + book.title + "</td>" +
+                    "<td><button type=\"button\" id=\"" + lendName + "\">Lend</button></td>" +
+                    "</tr>";
+            }
+            content += "</table>";
+            $("#available-books").html(content);
+        }
+
+        function showLentBooks(books) {
+            var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Lent to</th></tr>";
+            for (var book of books) {
+                var name = "";
+                $.getJSON(
+                    "/Lend/GetNameOfBorrower", {
+                    borrowerId: book.borrowerId
+                },
+                    function (data) {
+                        console.log(data);
+                        name = data["name"];
+                    }
+                );
+                let returnName = "return-book-" + book.id + "-button";
+                content += "<tr><td>" + book.id + "</td>" +
+                    "<td>" + book.author + "</td>" +
+                    "<td>" + book.title + "</td>" +
+                    "<td>" + name + "</td>" +
+                    "<td><button type=\"button\" id=\"" + returnName + "\">Return</button></td>" +
+                    "</tr>";
+
+            }
+            content += "</table>";
+            $("#lent-books").html(content);
+        }
+
+        function setReturnButtons(books) {
+            for (const book of books) {
+                let buttonName = "#return-book-" + book.id + "-button";
+                $(buttonName).click(function () {
+                    if (confirm('Are you sure you want to return book ' + book.title + ' ?')) {
+                        $.post("/Lend/ReturnBook", {
+                            id: book.id
+                        },
+                            function (data, status) {
+                                if (data["success"] === true) {
+                                    location.reload();
+                                } else {
+                                    alert("couldn't delete");
+                                }
+                            }
+                        );
+                    } else {
+                    }
+
+                });
+            }
+        }
+
+
+        function setLendButtons(books) {
+            for (const book of books) {
+                let lendName = "lend-book-" + book.id + "-button";
+                $("#" + lendName).click(function () {
+                    let formButton = "lend-book-" + book.id + "-button-form";
+                    let content = "<form><label for=\"name\">Borrower Name:</label><input type=\"text\" id=\"name-" + book.id + "\" name=\"name\"><br><br>" +
+                        "<button type=\"button\" id=\"" + formButton + "\">Lend</button></form>";
+                    console.log(content);
+                    $("#lend").html(content);
+                    $("#" + formButton).click(function () {
+
+                        if (confirm('Are you sure you want to lend book ' + book.title + ' ?')) {
+                            var nameValue = $("#name-" + book.id).val();
+                            console.log(book.id);
+                            console.log(nameValue);
+                            if (nameValue.length) {
+                                $.post("/Lend/Lend", {
+                                    id: book.id,
+                                    name: nameValue,
+                                },
+                                    function (data, status) {
+                                        if (data["success"] === true) {
+                                            location.reload();
+                                        } else {
+                                            alert("Couldn't lend. Probably customer does not exist");
+                                        }
+                                    }
+                                );
+                            } else {
+                                alert("Field should be non-empty");
+                            }
+                        } else {
+                        }
+
+                    });
+                });
+            }
+        }
+
+
+        $(document).ready(function () {
+
+            $.getJSON(
+                "/Lend/GetAllLentBooks", {
+            },
+                function (data) {
+                    showLentBooks(data["books"]);
+                    setReturnButtons(data["books"]);
+                }
+            );
+
+            $.getJSON(
+                "/Lend/GetAllAvailableBooks", {
+            },
+                function (data) {
+                    showAvailableBooks(data["books"]);
+                    setLendButtons(data["books"]);
+                }
+            );
+        });
+    </script>
+</head>
+<body>
+    <a href="/Menu">Home</a>
+    <h3>Return book</h3>
+    <section id="lent-books">
+    </section>
+
+    <h3>Lend book</h3>
+    <section id="available-books">
+    </section>
+    <section id="lend"></section>
+
+
+</body>
+</html>

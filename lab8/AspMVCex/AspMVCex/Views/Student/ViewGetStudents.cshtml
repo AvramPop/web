@@ -1,0 +1,163 @@
+﻿
+@using AspMVCex.Models;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewGetStudents</title>
+    <script src="~/Scripts/jquery-2.0.3.js"></script>
+    <script language="javascript">
+        function showStudents(students) {
+            var content = "<table border='1'><tr><th>ID</th><th>Name</th><th>Group</th></tr>";
+            for (const student of students) {
+                let deleteName = "delete-student-" + student.id + "-button";
+                let updateName = "update-student-" + student.id + "-button";
+                content += "<tr><td>" + student.id + "</td>" +
+                    "<td>" + student.name + "</td>" +
+                    "<td>" + student.groupId + "</td>" +
+                    "<td><button type=\"button\" id=\"" + deleteName + "\">Delete</button></td>" +
+                    "<td><button type=\"button\" id=\"" + updateName + "\">Update</button></td>" +
+                    "</tr>";
+
+            }
+            content += "</table>";
+            $("#all-students").html(content);
+        }
+
+        function setDeleteButtons(students) {
+            for (const student of students) {
+                let buttonName = "#delete-student-" + student.id + "-button";
+                $(buttonName).click(function () {
+                    if (confirm('Are you sure you want to delete student ' + student.name + ' from the database?')) {
+                        $.post("/Student/DeleteStudent", {
+                            id: student.id
+                        },
+                            function (data, status) {
+                                if (data["success"] === true) {
+                                    location.reload();
+                                } else {
+                                    alert("couldn't delete");
+                                }
+                            }
+                        );
+                    } else {
+                    }
+
+                });
+            }
+        }
+
+        function setUpdateButtons(students) {
+            for (const student of students) {
+                let buttonName = "#update-student-" + student.id + "-button";
+                $(buttonName).click(function () {
+                    let formButton = "update-student-" + student.id + "-button-form";
+                    let content = "<form><label for=\"name\">Name:</label><input type=\"text\" id=\"name-" + student.id + "\" name=\"name\" value=\"" + student.name + "\"><br><br>" +
+                        "<label for=\"group\">Group:</label><input type=\"text\" id=\"group-" + student.id + "\" name=\"group\" value = \"" + student.groupId + "\"><br><br>" +
+                        "<button type=\"button\" id=\"" + formButton + "\">Update</button></form>";
+                    console.log(content);
+                    $("#update").html(content);
+                    $("#" + formButton).click(function () {
+
+                        if (confirm('Are you sure you want to update student ' + student.name + ' in the database?')) {
+                            var nameValue = $("#name-" + student.id).val();
+                            var gid = $("#group-" + student.id).val();
+                            if (nameValue.length && gid.length) {
+                                if (!isNaN(gid)) {
+                                    $.post("/Student/UpdateStudent", {
+                                        id: student.id,
+                                        name: nameValue,
+                                        group: gid
+                                    },
+                                        function (data, status) {
+                                            if (data["success"] === true) {
+                                                location.reload();
+                                            } else {
+                                                alert("couldn't delete");
+                                            }
+                                        }
+                                    );
+                                } else {
+                                    alert("Group should be numeric");
+                                }
+                            } else {
+                                alert("Both field should be non-empty");
+                            }
+                        } else {
+                        }
+
+                    });
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            Array.prototype.pushArray = function (arr) {
+                this.push.apply(this, arr);
+            };
+
+            var students = [];
+            $(function () {
+                $.getJSON(
+                    "/Student/GetStudents", {}, function (data, status) {
+                        students.pushArray(data["students"]);
+                        showStudents(students);
+                        setDeleteButtons(students);
+                        setUpdateButtons(students);
+                    }
+                )
+            });
+
+            $("#add-student-button").click(function () {
+                var nameValue = $("#name").val();
+                var gid = $("#group").val();
+                if (nameValue.length && gid.length) {
+                    if (!isNaN(gid)) {
+                        $.post("/Student/AddStudent", {
+                            name: nameValue,
+                            groupId: gid
+                        },
+                            function (data, status) {
+                                if (data["success"] === true) {
+                                    location.reload();
+                                } else {
+                                    alert("your data is invalid");
+                                }
+                            }
+                        );
+                    } else {
+                        alert("Group should be numeric");
+                    }
+                } else {
+                    alert("Both field should be non-empty");
+                }
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+    <a href="/Menu">Home</a>
+    <section id="all-students">
+    </section>
+
+    <h3>Add a new student</h3>
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="group">Group:</label>
+        <input type="text" id="group" name="group"><br><br>
+        <button type="button" id="add-student-button">Add</button>
+    </form>
+    <section id="update"></section>
+
+
+</body>
+</html>

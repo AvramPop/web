@@ -46,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -147,9 +153,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BookController.cs" />
+    <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LendController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="DataAbstractionLayer\DB.cs" />
     <Compile Include="Global.asax.cs">
@@ -202,12 +212,17 @@
     <Content Include="Views\Main\ViewGetStudents.cshtml" />
     <Content Include="Views\Main\AddNewStudent.cshtml" />
     <Content Include="Views\Main\FilterStudents.cshtml" />
+    <Content Include="Views\Main\Home.cshtml" />
+    <Content Include="Views\Student\ViewGetStudents.cshtml" />
+    <Content Include="Views\Menu\ViewMenu.cshtml" />
+    <Content Include="Views\Book\ViewBook.cshtml" />
+    <Content Include="Views\Catalog\ViewCatalog.cshtml" />
+    <Content Include="Views\Lend\ViewLend.cshtml" />
+    <Content Include="Views\Login\ViewLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Book\" />
-    <Folder Include="Views\Manager\" />
-    <Folder Include="Views\Student\" />
+    <Folder Include="Views\Logout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
