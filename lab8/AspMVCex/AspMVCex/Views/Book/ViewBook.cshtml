@@ -9,15 +9,42 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewBook</title>
+    <style>
+        .container {
+            width: 500px;
+            clear: both;
+        }
+
+        .container input {
+            width: 100%;
+            clear: both;
+        }
+    </style>
     <script src="~/Scripts/jquery-2.0.3.js"></script>
     <script language="javascript">
         function showBooks(books) {
             var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Publisher</th><th>Genre</th><th>Borrowed by</th></tr>";
             for (var book of books) {
                 console.log(book);
+                var name = "";
+                $.ajaxSetup({
+                    async: false
+                });
+                $.getJSON(
+                    "/Lend/GetNameOfBorrower", {
+                    borrowerId: book.borrowerId
+                },
+                    function (data) {
+                        name = data["name"];
+                    }
+                );
+                $.ajaxSetup({
+                    async: true
+                });
                 if (book.borrowerId === -1 || book.borrowerId == -1) {
-                    book.borrowerId = "none";
+                    name = "none";
                 }
+
                 let deleteName = "delete-book-" + book.id + "-button";
                 let updateName = "update-book-" + book.id + "-button";
                 content += "<tr><td>" + book.id + "</td>" +
@@ -25,7 +52,7 @@
                     "<td>" + book.title + "</td>" +
                     "<td>" + book.publisher + "</td>" +
                     "<td>" + book.genre + "</td>" +
-                    "<td>" + book.borrowerId + "</td>" +
+                    "<td>" + name + "</td>" +
                     "<td><button type=\"button\" id=\"" + deleteName + "\">Delete</button></td>" +
                     "<td><button type=\"button\" id=\"" + updateName + "\">Update</button></td>" +
                     "</tr>";
@@ -78,21 +105,21 @@
                             var publisherValue = $("#publisher-" + book.id).val();
                             var genreValue = $("#genre-" + book.id).val();
                             if (authorValue.length && titleValue.length && publisherValue.length && genreValue.length) {
-                                    $.post("/Book/UpdateBook", {
-                                        id: book.id,
-                                        title: titleValue,
-                                        author: authorValue,
-                                        publisher: publisherValue,
-                                        genre: genreValue
-                                    },
-                                        function (data, status) {
-                                            if (data["success"] === true) {
-                                                location.reload();
-                                            } else {
-                                                alert("couldn't delete");
-                                            }
+                                $.post("/Book/UpdateBook", {
+                                    id: book.id,
+                                    title: titleValue,
+                                    author: authorValue,
+                                    publisher: publisherValue,
+                                    genre: genreValue
+                                },
+                                    function (data, status) {
+                                        if (data["success"] === true) {
+                                            location.reload();
+                                        } else {
+                                            alert("couldn't delete");
                                         }
-                                    );
+                                    }
+                                );
                             } else {
                                 alert("Fields should be non-empty");
                             }
@@ -107,66 +134,75 @@
 
 
         $(document).ready(function () {
-            Array.prototype.pushArray = function (arr) {
-                this.push.apply(this, arr);
-            };
+            if (JSON.parse(sessionStorage["currentUser"]) !== null) {
 
-            var books = [];
-            $(function () {
-                $.getJSON(
-                    "/Book/GetBooks", {}, function (data, status) {
-                        books.pushArray(data["books"]);
-                        showBooks(books);
-                        setDeleteButtons(books);
-                        setUpdateButtons(books);
-                    }
-                )
-            });
+                Array.prototype.pushArray = function (arr) {
+                    this.push.apply(this, arr);
+                };
 
-            $("#add-book-button").click(function () {
-                var authorValue = $("#author").val();
-                var titleValue = $("#title").val();
-                var publisherValue = $("#publisher").val();
-                var genreValue = $("#genre").val();
-                if (authorValue.length && titleValue.length && publisherValue.length && genreValue.length) {
-                    $.post("/Book/AddBook", {
-                        author: authorValue,
-                        title: titleValue,
-                        publisher: publisherValue,
-                        genre: genreValue
-                    },
-                        function (data, status) {
-                            if (data["success"] === true) {
-                                location.reload();
-                            } else {
-                                alert("your data is invalid");
-                            }
+                var books = [];
+                $(function () {
+                    $.getJSON(
+                        "/Book/GetBooks", {}, function (data, status) {
+                            books.pushArray(data["books"]);
+                            showBooks(books);
+                            setDeleteButtons(books);
+                            setUpdateButtons(books);
                         }
-                    );
-                } else {
-                    alert("Fields should be non-empty");
-                }
-            });
+                    )
+                });
+
+                $("#add-book-button").click(function () {
+                    var authorValue = $("#author").val();
+                    var titleValue = $("#title").val();
+                    var publisherValue = $("#publisher").val();
+                    var genreValue = $("#genre").val();
+                    if (authorValue.length && titleValue.length && publisherValue.length && genreValue.length) {
+                        $.post("/Book/AddBook", {
+                            author: authorValue,
+                            title: titleValue,
+                            publisher: publisherValue,
+                            genre: genreValue
+                        },
+                            function (data, status) {
+                                if (data["success"] === true) {
+                                    location.reload();
+                                } else {
+                                    alert("your data is invalid");
+                                }
+                            }
+                        );
+                    } else {
+                        alert("Fields should be non-empty");
+                    }
+                });
+            } else {
+                location.href = "Login";
+            }
         });
     </script>
 </head>
 <body>
     <a href="/Menu">Home</a>
+    <h1>Books</h1>
+
     <section id="all-books">
     </section>
+    <div class="containter">
 
-    <h3>Add a new Book</h3>
-    <form>
-        <label for="Author">Author:</label>
-        <input type="text" id="author" name="author"><br><br>
-        <label for="Title">Title:</label>
-        <input type="text" id="title" name="title"><br><br>
-        <label for="Publisher">Publisher:</label>
-        <input type="text" id="publisher" name="publisher"><br><br>
-        <label for="Genre">Genre:</label>
-        <input type="text" id="genre" name="genre"><br><br>
-        <button type="button" id="add-book-button">Add</button>
-    </form>
+        <h3>Add a new Book</h3>
+        <form>
+            <label for="Author">Author:</label>
+            <input type="text" id="author" name="author"><br><br>
+            <label for="Title">Title:</label>
+            <input type="text" id="title" name="title"><br><br>
+            <label for="Publisher">Publisher:</label>
+            <input type="text" id="publisher" name="publisher"><br><br>
+            <label for="Genre">Genre:</label>
+            <input type="text" id="genre" name="genre"><br><br>
+            <button type="button" id="add-book-button">Add</button>
+        </form>
+    </div>
     <section id="update"></section>
 </body>
 </html>

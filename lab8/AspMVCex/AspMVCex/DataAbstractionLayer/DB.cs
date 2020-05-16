@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -82,7 +83,7 @@ namespace AspMVCex.DataAbstractionLayer
         public bool login(string user, string password)
         {
 
-            List<Student> students = new List<Student>();
+            List<Manager> managers = new List<Manager>();
 
             try
             {
@@ -92,17 +93,16 @@ namespace AspMVCex.DataAbstractionLayer
 
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
-                cmd.CommandText = "select * from manager where username=\'" + user + "\', password = \'" + password + "\'";
+                cmd.CommandText = "select * from manager where username=\'" + user + "\' and password = \'" + password + "\'";
+                Debug.WriteLine("select * from manager where username=\'" + user + "\' and password = \'" + password + "\'");
                 MySqlDataReader myreader = cmd.ExecuteReader();
 
                 while (myreader.Read())
                 {
-                    Student stud = new Student();
-                    stud.id = myreader.GetInt32("id");
-                    stud.name = myreader.GetString("name");
-                    stud.groupId = myreader.GetInt32("group_id");
-                    students.Add(stud);
+                    Manager manager = new Manager();
+                    managers.Add(manager);
                 }
+                Debug.WriteLine(managers.Count);
                 myreader.Close();
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
@@ -110,7 +110,7 @@ namespace AspMVCex.DataAbstractionLayer
                 Console.Write(ex.Message);
                 return false;
             }
-            return students.Count == 1;
+            return managers.Count == 1;
 
         }
 
@@ -159,7 +159,7 @@ namespace AspMVCex.DataAbstractionLayer
         }
 
 
-        public List<Book> selectBooksWithIdentifierLike(int identifier, string title)
+        public List<Book> selectBooksWithIdentifierLike(string identifier, string title)
         {
             List<Book> books = new List<Book>();
 

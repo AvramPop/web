@@ -9,6 +9,17 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewLend</title>
+    <style>
+        .container {
+            width: 500px;
+            clear: both;
+        }
+
+            .container input {
+                width: 100%;
+                clear: both;
+            }
+    </style>
     <script src="~/Scripts/jquery-2.0.3.js"></script>
     <script language="javascript">
         function showAvailableBooks(books) {
@@ -32,15 +43,21 @@
             var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Lent to</th></tr>";
             for (var book of books) {
                 var name = "";
+                $.ajaxSetup({
+                    async: false
+                });
                 $.getJSON(
                     "/Lend/GetNameOfBorrower", {
                     borrowerId: book.borrowerId
                 },
                     function (data) {
-                        console.log(data);
                         name = data["name"];
                     }
                 );
+                $.ajaxSetup({
+                    async: true
+                });
+                console.log(name);
                 let returnName = "return-book-" + book.id + "-button";
                 content += "<tr><td>" + book.id + "</td>" +
                     "<td>" + book.author + "</td>" +
@@ -85,7 +102,6 @@
                     let formButton = "lend-book-" + book.id + "-button-form";
                     let content = "<form><label for=\"name\">Borrower Name:</label><input type=\"text\" id=\"name-" + book.id + "\" name=\"name\"><br><br>" +
                         "<button type=\"button\" id=\"" + formButton + "\">Lend</button></form>";
-                    console.log(content);
                     $("#lend").html(content);
                     $("#" + formButton).click(function () {
 
@@ -119,29 +135,35 @@
 
 
         $(document).ready(function () {
+            if (JSON.parse(sessionStorage["currentUser"]) !== null) {
 
-            $.getJSON(
-                "/Lend/GetAllLentBooks", {
-            },
-                function (data) {
-                    showLentBooks(data["books"]);
-                    setReturnButtons(data["books"]);
-                }
-            );
+                $.getJSON(
+                    "/Lend/GetAllLentBooks", {
+                },
+                    function (data) {
+                        showLentBooks(data["books"]);
+                        setReturnButtons(data["books"]);
+                    }
+                );
 
-            $.getJSON(
-                "/Lend/GetAllAvailableBooks", {
-            },
-                function (data) {
-                    showAvailableBooks(data["books"]);
-                    setLendButtons(data["books"]);
-                }
-            );
+                $.getJSON(
+                    "/Lend/GetAllAvailableBooks", {
+                },
+                    function (data) {
+                        showAvailableBooks(data["books"]);
+                        setLendButtons(data["books"]);
+                    }
+                );
+            } else {
+                location.href = "Login";
+            }
         });
     </script>
 </head>
 <body>
     <a href="/Menu">Home</a>
+    <h1>Lend:</h1>
+
     <h3>Return book</h3>
     <section id="lent-books">
     </section>

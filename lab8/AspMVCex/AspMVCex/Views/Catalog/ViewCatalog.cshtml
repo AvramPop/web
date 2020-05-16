@@ -9,10 +9,107 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewCatalog</title>
+    <style>
+        .container {
+            width: 500px;
+            clear: both;
+        }
+
+            .container input {
+                width: 100%;
+                clear: both;
+            }
+    </style>
+    <script src="~/Scripts/jquery-2.0.3.js"></script>
+    <script language="javascript">
+        function showBooks(books) {
+            var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Publisher</th><th>Genre</th><th>Borrowed by</th></tr>";
+            for (var book of books) {
+                console.log(book);
+                var name = "";
+                $.ajaxSetup({
+                    async: false
+                });
+                $.getJSON(
+                    "/Lend/GetNameOfBorrower", {
+                    borrowerId: book.borrowerId
+                },
+                    function (data) {
+                        name = data["name"];
+                    }
+                );
+                $.ajaxSetup({
+                    async: true
+                });
+                if (book.borrowerId === -1 || book.borrowerId == -1) {
+                    name = "none";
+                }
+                content += "<tr><td>" + book.id + "</td>" +
+                    "<td>" + book.author + "</td>" +
+                    "<td>" + book.title + "</td>" +
+                    "<td>" + book.publisher + "</td>" +
+                    "<td>" + book.genre + "</td>" +
+                    "<td>" + name + "</td>" +
+                    "</tr>";
+
+            }
+            content += "</table>";
+            $("#search-result").html(content);
+        }
+
+
+        function updateSearchHistory(queries) {
+            var content = "<h4>Search history:<br>";
+            for (const query of queries) {
+                content += query + "<br>";
+            }
+            content += "</h4>";
+            $("#past-queries").html(content);
+        }
+
+        $(document).ready(function () {
+            if (JSON.parse(sessionStorage["currentUser"]) !== null) {
+
+                var searchHistory = [];
+                $("#search").click(function () {
+                    searchHistory.push($('#query').val());
+                    console.log(searchHistory);
+                    $.getJSON(
+                        "/Catalog/SearchBooks",
+                        { query: $('#query').val() },
+                        function (data) {
+                            showBooks(data["books"]);
+                            updateSearchHistory(searchHistory);
+                        }
+                    );
+                });
+            } else {
+                location.href = "Login";
+            }
+        });
+    </script>
 </head>
 <body>
     <a href="/Menu">Home</a>
+    <h1>Catalog:</h1>
+
     <div>
+        <div class="containter">
+
+
+            <section style="border: 1px solid red; width: 400px">
+                Search in books:<br />
+                Query: <input type="text" name="query" id="query" /> <br />
+                <input type="button" id="search" value="Search!" /><br />
+            </section>
+        </div>
+        <p></p>
+
+
+        <section id="search-result">
+        </section>
+        <section id="past-queries">
+        </section>
     </div>
 </body>
 </html>

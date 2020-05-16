@@ -11,6 +11,17 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewGetStudents</title>
+    <style>
+        .container {
+            width: 500px;
+            clear: both;
+        }
+
+            .container input {
+                width: 100%;
+                clear: both;
+            }
+    </style>
     <script src="~/Scripts/jquery-2.0.3.js"></script>
     <script language="javascript">
         function showStudents(students) {
@@ -98,46 +109,51 @@
         }
 
         $(document).ready(function () {
-            Array.prototype.pushArray = function (arr) {
-                this.push.apply(this, arr);
-            };
+            if (JSON.parse(sessionStorage["currentUser"]) !== null) {
 
-            var students = [];
-            $(function () {
-                $.getJSON(
-                    "/Student/GetStudents", {}, function (data, status) {
-                        students.pushArray(data["students"]);
-                        showStudents(students);
-                        setDeleteButtons(students);
-                        setUpdateButtons(students);
-                    }
-                )
-            });
+                Array.prototype.pushArray = function (arr) {
+                    this.push.apply(this, arr);
+                };
 
-            $("#add-student-button").click(function () {
-                var nameValue = $("#name").val();
-                var gid = $("#group").val();
-                if (nameValue.length && gid.length) {
-                    if (!isNaN(gid)) {
-                        $.post("/Student/AddStudent", {
-                            name: nameValue,
-                            groupId: gid
-                        },
-                            function (data, status) {
-                                if (data["success"] === true) {
-                                    location.reload();
-                                } else {
-                                    alert("your data is invalid");
+                var students = [];
+                $(function () {
+                    $.getJSON(
+                        "/Student/GetStudents", {}, function (data, status) {
+                            students.pushArray(data["students"]);
+                            showStudents(students);
+                            setDeleteButtons(students);
+                            setUpdateButtons(students);
+                        }
+                    )
+                });
+
+                $("#add-student-button").click(function () {
+                    var nameValue = $("#name").val();
+                    var gid = $("#group").val();
+                    if (nameValue.length && gid.length) {
+                        if (!isNaN(gid)) {
+                            $.post("/Student/AddStudent", {
+                                name: nameValue,
+                                groupId: gid
+                            },
+                                function (data, status) {
+                                    if (data["success"] === true) {
+                                        location.reload();
+                                    } else {
+                                        alert("your data is invalid");
+                                    }
                                 }
-                            }
-                        );
+                            );
+                        } else {
+                            alert("Group should be numeric");
+                        }
                     } else {
-                        alert("Group should be numeric");
+                        alert("Both field should be non-empty");
                     }
-                } else {
-                    alert("Both field should be non-empty");
-                }
-            });
+                });
+            } else {
+                location.href = "Login";
+            }
         });
 
 
@@ -145,17 +161,21 @@
 </head>
 <body>
     <a href="/Menu">Home</a>
+    <h1>Students:</h1>
+
     <section id="all-students">
     </section>
+    <div class="containter">
 
-    <h3>Add a new student</h3>
-    <form>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br><br>
-        <label for="group">Group:</label>
-        <input type="text" id="group" name="group"><br><br>
-        <button type="button" id="add-student-button">Add</button>
-    </form>
+        <h3>Add a new student</h3>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="group">Group:</label>
+            <input type="text" id="group" name="group"><br><br>
+            <button type="button" id="add-student-button">Add</button>
+        </form>
+    </div>
     <section id="update"></section>
 
 

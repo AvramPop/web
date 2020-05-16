@@ -9,15 +9,32 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewMenu</title>
+    <script src="~/Scripts/jquery-2.0.3.js"></script>
+
+    <script language="javascript">
+        $(document).ready(function () {
+            if (JSON.parse(sessionStorage["currentUser"]) !== null) {
+                $("#logout-button").click(function () {
+                    sessionStorage.setItem("currentUser", null);
+                    console.log(JSON.parse(sessionStorage["currentUser"]));
+                    location.href = 'Login';
+                });
+            } else {
+                location.href = 'Login';
+            }
+        });
+    </script>
 </head>
 <body>
+    <h1>Main menu:</h1>
+
     <div>
         <ul style="list-style-type:none">
             <li><a href="/Book">Books Manager</a></li>
             <li><a href="/Student">Students Manager</a></li>
             <li><a href="/Lend">Lend a book</a></li>
             <li><a href="/Catalog">Search books</a></li>
-            <li><a href="/Logout">Logout</a></li>
+            <li><button type="button" id="logout-button">Logout</button></li>
         </ul>
     </div>
 </body>
