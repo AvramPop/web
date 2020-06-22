@@ -39,24 +39,65 @@
             $("#available-books").html(content);
         }
 
-        function showLentBooks(books) {
+        async function showLentBooks(books) {
+            // variant 1 sync
+            //var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Lent to</th></tr>";
+            //for (var book of books) {
+            //    var name = "";
+            //    $.ajaxSetup({
+            //        async: false
+            //    });
+            //    $.getJSON(
+            //        "/Lend/GetNameOfBorrower", {
+            //        borrowerId: book.borrowerId
+            //    },
+            //        function (data) {
+            //            name = data["name"];
+            //        }
+            //    );
+            //    $.ajaxSetup({
+            //        async: true
+            //    });
+            //    console.log(name);
+            //    let returnName = "return-book-" + book.id + "-button";
+            //    content += "<tr><td>" + book.id + "</td>" +
+            //        "<td>" + book.author + "</td>" +
+            //        "<td>" + book.title + "</td>" +
+            //        "<td>" + name + "</td>" +
+            //        "<td><button type=\"button\" id=\"" + returnName + "\">Return</button></td>" +
+            //        "</tr>";
+
+            //}
+            //content += "</table>";
+
+            // variant 2 - promise all 
+            //var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Lent to</th></tr>";
+
+            //let promises = [];
+            //for (let book of books) {
+            //    promises.push($.getJSON("/Lend/GetNameOfBorrower", {
+            //        borrowerId: book.borrowerId
+            //    }));
+            //}
+            //Promise.all(promises).then((values) => {
+            //    console.log(values);
+            //    for (let i = 0; i < books.length; i++) {
+            //        let returnName = "return-book-" + books[i].id + "-button";
+            //        content += "<tr><td>" + books[i].id + "</td>" +
+            //            "<td>" + books[i].author + "</td>" +
+            //            "<td>" + books[i].title + "</td>" +
+            //            "<td>" + values[i]["name"] + "</td>" +
+            //            "<td><button type=\"button\" id=\"" + returnName + "\">Return</button></td>" +
+            //            "</tr>";
+            //    }
+            //    $("#lent-books").html(content);
+            //});
+
+            //variant 3 - external method
+
             var content = "<table border='1'><tr><th>ID</th><th>Author</th><th>Title</th><th>Lent to</th></tr>";
             for (var book of books) {
-                var name = "";
-                $.ajaxSetup({
-                    async: false
-                });
-                $.getJSON(
-                    "/Lend/GetNameOfBorrower", {
-                    borrowerId: book.borrowerId
-                },
-                    function (data) {
-                        name = data["name"];
-                    }
-                );
-                $.ajaxSetup({
-                    async: true
-                });
+                var name = await getNameOfBorrower(book.borrowerId);
                 console.log(name);
                 let returnName = "return-book-" + book.id + "-button";
                 content += "<tr><td>" + book.id + "</td>" +
@@ -69,6 +110,14 @@
             }
             content += "</table>";
             $("#lent-books").html(content);
+
+        }
+
+        function getNameOfBorrower(borrowerId) {
+            return $.getJSON(
+                "/Lend/GetNameOfBorrower", {
+                borrowerId: borrowerId
+            }).then(data => data["name"]);
         }
 
         function setReturnButtons(books) {
